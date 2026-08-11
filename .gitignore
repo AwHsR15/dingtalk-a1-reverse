@@ -1,0 +1,15 @@
+# 含个人数据与设备密钥,禁止提交
+extract/
+capture/
+apk/
+decompiled/
+*.bin
+CREDENTIALS.md
+
+# 编译产物与第三方工具(可重新生成/下载,不进仓库)
+tools/*.exe
+tools/jadx/
+tools/jadx.zip
+tools/__pycache__/
+*.pyc
+

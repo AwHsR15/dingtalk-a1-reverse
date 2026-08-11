@@ -1,0 +1,10 @@
+{
+  "_comment": "示例格式。真实数据请存到 extract/verify_pairs.json(已被 .gitignore 排除)",
+  "deviceSecret": "0123456789abcdef0123456789abcdef",
+  "pairs": [
+    {
+      "random": "00000000000000000000000000000000",
+      "token": "<设备实际返回的对应 token,十六进制>"
+    }
+  ]
+}
