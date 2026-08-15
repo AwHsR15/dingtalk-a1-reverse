@@ -154,14 +154,27 @@ Android 开发者选项自带「蓝牙 HCI 侦听日志」。开启后用 App �
 ### 7.2 包头格式
 
 ```
-[0]     类型      0x13 = 主机→设备 / 0x31 = 设备→主机
-[1]     版本      恒为 0x01
-[2]     命令 ID
+[0]     类型      0x13 = 请求 / 0x31 = 响应(见下方修正)
+[1:3]   命令 ID   16 位大端
 [3]     序列号    逐包递增
-[4:7]   保留      0x000000
-[7]     长度      payload 字节数
+[4:8]   长度      payload 字节数(32 位大端)
 [8:]    payload   明文 JSON,或二进制数据
 ```
+
+> **修正(2026-08-11,第三方客户端实测)**:`[0]` **不是方向标记,是请求/响应标记**。
+> 对 bugreport3_enc 全量统计:
+>
+> | 谁写的 | type | 命令 |
+> |---|---|---|
+> | App | 0x13 | 0x0008/0x0100/0x0110/0x0111/0x0132/0x0133/0x0137/0x013F(自己发起) |
+> | App | **0x31** | 0x0114/0x0115/0x0116/0x0100(**对设备推送的 ACK**) |
+> | 设备 | 0x13 | 0x0114/0x0115/0x0116/0x0117(**设备自己发起的推送**) |
+> | 设备 | 0x31 | 对 App 命令的应答 |
+>
+> 即"谁发起谁写 0x13,谁应答谁写 0x31",与传输方向无关。
+> **ACK 用 0x13 会被设备当成新命令,直接回 `{"code":405}` 并中断文件传输。**
+> 这个坑卡了很久:文件属性能收到、数据永远不来,而且我方无条件 ACK 还会和
+> 设备的 405 形成每秒数十次的死循环。ACK 还必须**沿用推送帧的 seq**。
 
 超过单包容量的数据由后续**分片续包**承载(续包不带上述包头)。
 
@@ -306,8 +319,24 @@ token = AES-128-CBC(key=deviceSecret[:16] ascii, iv=key, pt=random ascii).hex()
 
 ## 10. SDK 架构(反编译确认)
 
-内部代号 **"Dinger"**。Java 为薄壳,协议栈/加密/Opus 编解码全在 native
-`libDtSync.so`,经 `DingerAudioTools`(JNI)桥接。关键 native 方法:
+内部代号 **"Dinger"**。Java 为薄壳,协议栈/加密/Opus 编解码全在 native 库里,
+经 `DingerAudioTools`(JNI)桥接。关键 native 方法:
+
+> **更正(2026-08-11)**:原生库是 **`libDingerSdk.so`**(7.3 MB),不是 `libDtSync.so`。
+> `DingerAudioTools` 的静态块写得很清楚:`System.loadLibrary("DingerSdk")`。
+> `libDtSync.so`(1.1 MB)是另一个子系统,依赖 `libdatabase_sqlcrypto` /
+> `libdmojo_support` 等钉钉内部库,与 A1 协议无关。
+>
+> `libDingerSdk.so` 的依赖非常干净:只有 `libc++_shared.so` + 系统库,
+> 因此**可以整个搬进第三方 App 直接用**。
+>
+> 另外 `DingerAudioTools` 里有两个常量:
+> ```java
+> public static int MAGIC_SEND = 19;   // 0x13
+> public static int MAGIC_RESP = 49;   // 0x31
+> ```
+> 官方源码独立印证了第 7.2 节靠抓包统计得出的"请求/响应标记"结论 ——
+> 命名是 SEND/RESP 而不是 TO_DEVICE/FROM_DEVICE,语义确凿。
 
 | 方法 | 作用 |
 |---|---|
@@ -323,6 +352,309 @@ token = AES-128-CBC(key=deviceSecret[:16] ascii, iv=key, pt=random ascii).hex()
 native 只做封包/加密/传输 —— 对复刻客户端非常有利。
 
 ---
+
+## 11. 第三方客户端实测(2026-08-11,已全程跑通)
+
+客户端实现在归忆安卓端:`D:\Claude\guiyi\android\app\src\main\java\com\guiyi\recorder\a1\`
+(`A1Protocol` 纯协议 / `A1Auth` 鉴权 / `A1Client` BLE 传输 / `A1Session` 业务
+/ `A1Store` 落盘 / `OggOpusWriter` 容器)。协议层 17 个 JVM 单测,向量取自真实抓包。
+
+**PC 不能当宿主**:本机所有蓝牙适配器状态均为 `Unknown`(不在线),
+BLE 客户端只能跑在安卓上。实测机 Galaxy Z Fold 6 / Android 16。
+
+### 11.1 已在真机验证通过
+
+| 环节 | 结果 |
+|---|---|
+| BLE 扫描 / 连接 | ✅ MTU 协商到 **512** |
+| 离线鉴权 | ✅ `0x0008`→AES token→`0x0133` 返回 `code:200` + 全部 cap 位 |
+| 设备状态 `0x0132` | ✅ 电量 100%、存储 58GB/59630MB、固件 `V1.6.88-202601291628` |
+| 灰度开关 `0x0137` | ✅ `code:200` |
+| 参数设置 `0x0100` | ✅ `code:200` |
+| 文件列表 `0x0110` | ✅ 返回 9 条真实录音 |
+| 文件下载 `0x0111`→`0x0114`→`0x0115` | ✅ **53252 字节,与属性里的 size 分毫不差** |
+
+**离线第三方客户端已完全成立** —— 不装官方 App、不联网、不改固件。
+
+### 11.2 命令表补充与更正
+
+| cmd | 说明 |
+|---|---|
+| `0x0111` | **文件下载请求**(原命令表遗漏)`{did, fid, offset, progress:65537}` → `{code, fid}` |
+| `0x0101` | 声纹 `{action:start/stop, did, type:"voice_print"}` |
+| `0x013F` | 系统控制/电量 `{did, key:"battery_key"}` ——**不是** `0x0136` |
+
+下载时序:`0x0111` → 设备推 `0x0114`(属性) → **ACK** → 设备推 `0x0115`(数据,可多块)
+→ **每块都要 ACK**。ACK = `{"code":200}`,type **0x31**,seq 沿用推送帧。
+
+### 11.3 二进制布局(真机解出)
+
+**`0x0110` 文件列表**:`[0:2]code [2:4]条数`,之后每条 **8 字节**:
+`[0:2]标志 [2:6]fid(大端) [6:8]状态`,尾部 0x5A 填充。
+
+> 早先按 12 字节步长解会**每隔一条错一次**,读出 786432 / 196608 这类假 fid。
+> 加一道"fid 必须像 Unix 时间戳"的校验能兜住布局变化。
+
+**`0x0115` 文件数据块**:`[2:6]fid [8:12]块序号(从1起) [12:16]**本块**长度 [16:]数据`。
+
+> `[12:16]` 是**本块**长度不是文件总长:53252 字节的文件分两块,
+> 该字段分别为 48000 和 5252,相加才等于总长。按总长截会丢掉第二块。
+
+**下载下来的文件是钉钉私有容器**,不是裸 Opus,开头:
+
+```
+42 41 42 41  "BABA"   magic
+fc cf 00 00           小端,= 文件长 - 8
+44 54 59 4a  "DTYJ"
+76 65 72 20  "ver "   + "v1.7"
+66 6d 74 20  "fmt "   块内含 80 3e 00 00 = 16000 采样率
+...          "extr"   块
+```
+
+RIFF 风格分块结构。**尚未解出 data 块的边界与其中 Opus 帧的排布**,
+所以客户端目前原样存成 `.dtyj`,不改后缀成 `.opus`(会让人以为能直接播)。
+
+### 11.4 连接行为(踩坑记录)
+
+- **A1 在连接态下不广播**。被官方 App(或另一台设备)占着时扫不到,
+  `dumpsys bluetooth_manager` 里能看到 `[Packages]: [com.alibaba.dingtalk.global]`。
+  设备同一时刻只接受一个连接。
+- `connectGatt(autoConnect=false)` 只在设备**当下正在广播**时成功,否则约 30 秒后
+  `status=147`。客户端的做法是:先直连快速试一次,失败转 `autoConnect=true` 挂后台等。
+- **`extract/CREDENTIALS.md` 里记的 MAC `d4:3a:65:24:d9:62` 是错的**,
+  真实 MAC 是 **`0B:3B:25:65:3A:D4`**(实测扫描 + `dumpsys` 里的 `RE_OUI":"0B:3B:25"` 双重印证)。
+  错的那个看形态是字节序读反了的产物,前四字节正好是真实值的倒序。
+- 每次连接必须 `gatt.close()` 释放:安卓每进程只有 32 个 GATT 客户端槽位,漏一次少一个。
+
+## 11.5 官方 SDK 已内嵌进归忆(2026-08-11)
+
+把官方件原样搬进 `D:\Claude\guiyi\android`:
+
+| 内容 | 去处 |
+|---|---|
+| `libDingerSdk.so` + `libc++_shared.so`(自设备 `/data/app/.../lib/arm64/`) | `app/src/main/jniLibs/arm64-v8a/` |
+| `com.android.dingersdk.nativeInterface` 全部 15 个类 | `app/src/main/java/com/android/dingersdk/` |
+
+**包名必须保持 `com.android.dingersdk.nativeInterface`** —— JNI 按全限定类名
+解析 native 方法,改包名会直接 `UnsatisfiedLinkError`。
+
+反编译产物只依赖两个钉钉内部类,且都只用到一个常量。做法是**在外面补桩类**
+而不是改官方源码,这样以后从新版 APK 重新拉一份可以直接覆盖:
+
+- `com.taobao.weex.el.parse.Operators` — 只用了 `BLOCK_END` / `SINGLE_QUOTE`
+- `com.alibaba.wukong.im.message.MessageContentImpl` — 只用了 `KEY_RICH_TEXT_PAYLOAD`(= `"payload"`)
+
+桥接方式(`A1Native.kt`):原生 SDK 不碰蓝牙,要发的字节从 `OnSendData` 回调吐出来,
+收到的字节由宿主调 `PushBleRecvData` 喂回去 —— 正好接到归忆已有的 BLE 传输上。
+
+内嵌后拿到的、自己实现不了的能力:
+
+- `OpusConvertToOgg` —— **`.dtyj` 容器里 data 块的结构我们没解出来,这是官方正解**
+- `ExportAudioWithProgress` / `MergeFilesWithProgress` / `AudioClipWithProgress` / `SmartClipWithProgress`
+- `AESDecrypt` —— 解密加密录音
+- `openAudioFile` / `readAudioFrames` / `seekToSecond` —— 音频解码与定位
+- `StartAsr` / `StopAsr` / `PauseAsr` —— SDK 自带 ASR
+- `StartOta` / `StopOta`
+
+> **闭源库,来自用户自己设备,仅供本机互操作,不可再分发。**
+> 归忆的纯 Kotlin 实现保留着并且能独立工作(鉴权/列表/下载都已验证),
+> 原生 SDK 加载不上时自动回落,不是硬依赖。
+
+服务提供商相关的东西(corpId、自报 SDK 版本/机型、`InitConfig`)抽到了
+`A1Provider`,可在界面里改或整份替换,协议层不用动。
+
+## 11.5 官方 H5 前端源码(已获取)
+
+官方录音卡界面是**在线加载的钉钉小程序**,但**离线包在设备上有完整前端源码**:
+
+```
+/data/data/com.alibaba.dingtalk.global/files/dingTalkTheOne/ariverPackages/
+    installed/992025081915501485/<hash>/992025081915501485.tar
+```
+
+解包后是 `smart-hardware-ai-assistant/0.181.1/` 完整应用(mobile-recording 主 bundle
+1.1MB + vendor chunk 3.2MB + 21 种语言 i18n)。webpack 压缩但可提取行为契约。
+解析工具:`tools/h5_extract.py`(按类别抽取)、`tools/h5_context.py`(看调用上下文)。
+
+### 官方 H5 调用的设备能力 JSAPI(完整清单)
+
+| JSAPI | 用途 |
+|---|---|
+| `internal.dinger.recordOperation` | 录音 start/stop |
+| `internal.dinger.realStreamOperation` | **实时流 + ASR 开关** |
+| `internal.dinger.getDeviceStatus` | 设备状态 |
+| `internal.dinger.getFileList` / `fileOperation` / `dingerFileOperation` | 文件 |
+| `internal.dinger.sendBleCommand` | 直接下发 BLE 命令 |
+| `internal.dinger.audio` / `otaOperation` | 音频 / OTA |
+| `internal.channel.subscribe/publish` | 事件通道 |
+| `internal.request.lwp` | 钉钉云长连接(外部服务走这里) |
+
+### 外部 ASR/翻译的参数契约
+
+```js
+realStreamOperation { deviceId, operationName:"set", operationParam:{
+    needAsr: "start"|"stop",
+    sourceLanguage: "multilingual" | <语言码>,
+    targetLanguages: [...], languageHints: [...],
+    attributes: { scene: "transcription"                 // 纯转写
+                       | "simultaneous_interpretation"   // 同传(单向)
+                       | "real_time_translation" }       // 实时翻译(双向)
+}}
+```
+
+## 11.6 实时流的真正开关(踩坑记录,已实测修正)
+
+**`0x0137` 灰度开关里的 `stream_record` 不是实时流开关。**发它设备会回 `code:200`,
+但根本不推流,极具误导性。
+
+真正的开关来自反编译 `m62.Y(boolean)`:
+
+```
+0x0100  {"action":"set","params":[{"key":"upload_stream","val":1}]}
+```
+
+实测:发 `upload_stream=1` 后设备立刻开始推 `0x0117`(15 秒收到 760 帧)。
+`stream_record` 只是「允许边录边传」的配置位,两码事。
+
+## 11.7 第三方客户端 + 自定义转写服务商(已端到端验证)
+
+2026-08-12 在 Y700(TB320FC/LineageOS)上全链路跑通,**完全不经阿里云**:
+
+```
+A1 硬件 --BLE--> 归忆(离线鉴权) --流式 Ogg 封装--> Soniox --> 实时字幕
+```
+
+- 离线鉴权在**一台全新设备**上验证成功(用提取的 deviceSecret 现场算 token,
+  设备回 `code:200` + 全部 cap 位)
+- 实时流 760+ 帧稳定推送
+- Soniox 输出中文转写 + **说话人分离**生效
+
+**音频格式的关键处理**:Soniox 的 raw 格式只收 PCM 不收裸 Opus,而 A1 吐的是裸 Opus。
+解法是复用 `OggOpusWriter` 做**流式 Ogg 封装**(把输出接到 WebSocket),再用
+`audio_format:"auto"` 让服务端识别 ogg —— 手机端全程不碰编解码。
+实时场景要把每页包数从 50 调到 10(50 包≈1 秒,会原样变成字幕延迟)。
+
+客户端实现见 `D:\Claude\guiyi\android\app\src\main\java\com\guiyi\recorder\a1\transcribe\`
+(`Transcription.kt` 服务商抽象 / `SonioxProvider.kt` / `A1LiveTranscriber.kt`)。
+
+## 12. 仍未掌握
+
+- [ ] `0x0115` 容器内 data 块的结构(Opus 帧如何排布 / 是否加密)
+- [ ] 加密开启后新录音的 `0x0115` 是否变密文(仍是原第 7.5 节留的问题)
+- [ ] WiFi 热点通道 `0x0120`/`0x0121` 的实际传输协议
+- [ ] `0x000C` 设备主动推的二进制(每次连接都有,内含 fid,疑似状态广播)
+- [ ] OTA `0x0135` / 定时 `cap_schedule` / AI 按键 `cap_aikey_option`
+
+## 13. 处理架构:转写/声纹在哪跑,以及完整运作模式清单
+
+用户提问驱动的补充调查(2026-08-11),证据均来自反编译代码里**未混淆的类名/方法名
+/日志字符串**(这些是最强的取证线索,因为混淆器不会替换字符串常量)。
+
+### 13.1 转写(ASR)——完全不在设备上,是阿里云通义听悟
+
+完整调用链(`iy7.java` = 内部类名 `DingerManger`,日志 tag 也是这个):
+
+```
+H5 页面(如 dinger.dingtalk.com 的会议页)
+  → JS 桥接 realStreamOperation({operationName:"set", operationParam:{needAsr:"start", scene:...}})
+  → DingerInterfaceImpl.V()
+      m62.C().Y(true)              // 打开设备 BLE 实时流(即 cmd 0x0117 开始持续推送)
+      iy7.C2() [内部日志名 "startAsr"]
+        → k8r.b()  [日志 tag "TingwuGeneral"]
+            → zg7.e(...)  网络请求,问阿里后端要一个 audioStreamWssUrl
+        → 拿到 wss:// URL 后:
+            DingerAudioTools.StartAsr(wssUrl)   // native(libDtSync.so)
+```
+
+`DingerAudioTools.StartAsr(String wssUrl)` 是 native 方法,传入的是一个
+**WebSocket 地址**。也就是说:手机原生 SDK 把从设备 BLE 收到的实时 Opus 音频,
+通过 WebSocket **转发给阿里云"通义听悟"(Tingwu)服务**做实时语音识别。
+
+**结论:转写不在 BES2800 芯片上跑,也不在手机本地跑,是纯云端服务
+(通义听悟),且依赖网络连接。** `libDtSync.so` 只是个转发管道,不含 ASR 模型。
+`stopAsr`(`iy7.G2()`)同样调用 native `DingerAudioTools.StopAsr()` 来关闭这条转发。
+
+### 13.2 声纹(voiceprint)——设备只负责"录",处理疑似云端/App侧
+
+BLE 层声纹命令 `0x0101 {action:start/stop, type:"voice_print"}`(第 11.2 节)
+只是让设备进入某种采集模式,不代表设备做了声纹比对。反编译中找到的唯一
+处理逻辑在 `iy7.f2()`:
+
+```java
+if (TextUtils.equals(source, "device_voiceprint") || sg7.b()) {
+    if (body.has("oggPath")) {
+        j4t.e(body.optString("oggPath"), body.optLong("duration"), null);
+    }
+}
+```
+
+这是**手机 App 侧**对一条"设备来源标记为 device_voiceprint"的**本地事件**
+(带 `oggPath`,即已经转码好的本地 ogg 文件路径)做后续处理,不是设备把声纹
+特征值传回来。BES2800 是音频编解码/降噪芯片,没有迹象表明它跑声纹比对模型。
+**声纹的实际匹配逻辑大概率在 App/云端,设备只负责按声纹触发的录音片段。**
+(这条是合理推断,未追到 `j4t.e()` 内部实现,不算 100% 证实。)
+
+### 13.3 长会议的实时协同:需要三条链路同时在线
+
+实时转写+摘要要求同时满足:
+
+```
+设备 --BLE(0x0117 持续推流)--> 手机 --WebSocket(需联网)--> 通义听悟云端
+```
+
+- **BLE 连接必须全程保持**:设备同一时刻只接受一个连接(第 11.4 节已验证),
+  断开或超出范围,实时流立即中断
+- **手机必须联网**:WSS 连接走的是运营商/WiFi 网络,不是 BLE
+- 转写结果回传后,摘要/可视化大概率也在 H5 页面里调云端 LLM 生成
+  (未直接追证据,但架构上 H5+云 API 是唯一合理路径 —— App 原生代码里
+  没有找到本地摘要生成逻辑)
+
+**如果 BLE 断开或没网:实时功能全部不可用,但设备本身不受影响** ——
+它按第 13.4 节的模式继续本地录音存文件(64GB 本地存储独立于连接状态),
+之后重新连接时用 `0x0110`/`0x0111`/`0x0115` 把文件同步下来,再补跑一次
+转写/摘要(这也是官方 App 里"离线转写/云端转写"两种模式并存的原因)。
+
+**即:设备不是"一直在实时传输"** —— 实时流(0x0117)只在 App 明确发起
+`realStreamOperation start` 时才打开(对应"正在看实时转写"这类场景);
+平时录音是设备自己写本地文件,事后批量同步,不占用持续 BLE 带宽。
+
+### 13.4 完整运作模式清单
+
+**A. 录音场景模式**(`DtiotAudioMode`,决定 mic 阵列的拾音策略):
+
+| 值 | 常量 | 含义 |
+|---|---|---|
+| 0 | AUDIO_MODE_STANDARD | 标准模式 |
+| 1 | AUDIO_MODE_HIFI | 高保真 |
+| 2 | AUDIO_MODE_VISUAL_REC | 可视化录制(声明存在,但未在反编译代码中找到实际调用点,未确认具体行为) |
+| 3 | AUDIO_MODE_CONFERENCE | 会议模式 |
+| 4 | AUDIO_MODE_FACE_TO_FACE | 面对面模式 |
+| 5 | AUDIO_MODE_INTERVIEW | 采访模式 |
+
+与实测协议**交叉验证**:抓包里 `0x0116`(流属性)的 `stream_type` 字段
+出现过 `0`/`3`/`4`,与 STANDARD/CONFERENCE/FACE_TO_FACE 完全对应。
+
+**B. 传输/连接事件**(`DtIotEvent`,双通道各自独立开关):
+
+| 值 | 事件 |
+|---|---|
+| 1~4 | BleOpen / BleClose / BleConnect / BleDisconnect |
+| 11~14 | WiFiOpen / WiFiClose / WiFiConnect / WiFiDisconnect |
+
+印证第 7.3.1 节的"双通道"猜想:BLE 与 WiFi 是两条独立管理的传输链路。
+
+**C. 能力开关**(连接时通过 `0x0132` 状态位协商,决定 App 展示哪些功能入口):
+
+`cap_remark`(备注/场景标记 ≥2 解锁)、`cap_voiceprint`(声纹)、
+`cap_incognitomode`(隐身/免打扰录音,不参与云同步,推断)、
+`cap_schedule`(定时任务)、`cap_aikey_option`(AI 按键)。
+
+**D. 独立的实时双向语音通道(`device_chat`)**:与 ASR 转写通道不同的另一条
+路径 ——`source:"device_chat"` 事件带 `data`(字节数组)+`len`,疑似对应
+`cap_aikey_option`(AI 按键):按一下设备物理键,触发设备到手机的实时语音
+数据流,大概率用于唤醒式 AI 语音助手交互(如问答),而非会议转写。
+未追到具体 BLE opcode 来源,推测是本文档第 12 节里仍未解出的 `0x000C`
+主动推送。
 
 ## 工具
 

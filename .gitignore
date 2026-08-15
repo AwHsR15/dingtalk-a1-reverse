@@ -13,3 +13,8 @@ tools/jadx.zip
 tools/__pycache__/
 *.pyc
 
+official_h5/
+official_ui/
+
+# 官方 APK 原包(460MB 第三方专有二进制,单文件超过 GitHub 100MB 上限)
+apks/
