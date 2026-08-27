@@ -766,8 +766,29 @@ Data ID: data   Data size: 18640   CRC: 0x817a932e
 
 `AES flag: 1` 是**默认开着**的（设备 `0x0100` 参数里也能看到
 `{"key":"aes","val":1}`），所以第 7.5 节留的"加密开启后 0x0115 是否变密文"
-这个问题其实问反了 —— 它一直就是开的，而 `OpusConvertToOgg` 照样能解出
-正确时长（7120ms 对得上真实 7 秒），说明**SDK 在转换时就把它解开了**。
+这个问题其实问反了 —— 它一直就是开的。
+
+> **更正（同日实测）**：一开始据"`OpusConvertToOgg` 能解出正确时长"推断
+> 转换时就解密了，**这是错的**。转换只重新封装，不解密：
+>
+> - 转出来的 Ogg 框架完全合规 —— 358 页、零坏同步、首页 `OpusHead`
+>   （1 声道 / 16 kHz）、次页 `OpusTags` 来自 libopus、末页 granulepos
+>   正好 7.120 秒；
+> - 但**包体仍是密文**。ffmpeg 这个参考实现直接报
+>   `Error parsing the packet header`，7.12 秒只啃出 2.65 秒噪声；
+>   Android 的 `MediaCodec` 表现完全一样。
+> - 时长能对上，是因为它来自 Ogg 的 granulepos 和私有头，与包体解不解得开无关。
+>
+> **解密发生在 `openAudioFile`**，而且它判断"要不要解密"看的是那 80 字节
+> 私有头里的 AES 标志。所以：
+>
+> | 喂给 `openAudioFile` 的文件 | `attr.isEncrypted` | 结果 |
+> |---|---|---|
+> | `[BABA 头][OggS 流]`（官方原样） | `true` | 正确解出**全长** PCM，RMS 0.01~0.05（正常人声） |
+> | 裸 `OggS`（私有头被切掉） | `false` | 当成明文不解密，只解出 27~37% 的噪声，RMS 0.23~0.30 |
+>
+> 结论：**那 80 字节私有头绝对不能切**。切了之后标准解码器读不了
+> （包体是密文），官方解码器也不肯解密（标志没了）—— 两条路一起堵死。
 
 ## 14.4 设备侧命令与能力
 
@@ -817,7 +838,7 @@ Data ID: data   Data size: 18640   CRC: 0x817a932e
 按键类 `BLE_OPEN=1`/`BLE_CLOSE=2`/`BLE_CONNECT=3`/`BLE_DISCONNECT=4`、
 `WIFI_OPEN=11`/`WIFI_CLOSE=12`/`WIFI_CONNECT=13`/`WIFI_DISCONNECT=14`
 
-## 14.6 `OpusConvertToOgg` 的输出不是标准 Ogg（新发现，归忆踩到了）
+## 14.6 `OpusConvertToOgg` 的输出：合规 Ogg 框架 + 密文包体
 
 真机实测：SDK 转换输出的 `<fid>.ogg` 结构是
 
@@ -840,15 +861,15 @@ SDK 日志自己也写了：`initCovertToOgg ... privateHeaderOffset: 80`。
 所以那个 Ogg 大概率缺 `OpusHead`/`OpusTags` 之类的必备头，
 只有 SDK 自己认。
 
-**下一步要做的实验**（需要接上手机）：
+**实验结果（已做完）**：第 1 条就通了 —— 保留 SDK 原样输出直接喂
+`openAudioFile(path, deviceSecret, attr)`，`attr.isEncrypted` 回填 `true`，
+解出全长 PCM，能量正常，转写正常出段。详见上面 14.3 的更正表。
 
-1. 保留 SDK 原样输出（**不要**切那 80 字节），
-   直接喂 `DingerAudioTools.openAudioFile(<fid>.ogg, deviceSecret, attr)`，
-   看能不能打开、`attr.isEncrypted` 回填成什么。
-2. 如果 1 不行，改喂原始 `<fid>.opus` 私有容器
-   （注意 SDK 转换成功后会自己把 `.opus` 删掉，实验前要先留一份）。
-3. 哪条通，归忆的 `PcmDecode` 就改走哪条，把 `MediaExtractor` 这条
-   留给手机麦克风自录的 WAV。
+归忆的落地：`DingerAudio.decodeToPcm()` 走官方通道并优先于
+`MediaExtractor`；`A1Store.isConverted()` 只认 `[BABA][OggS]`，
+裸 Ogg 判成未转换以便自动重新同步；播放器与转写共用
+`DingerAudio.lock`，并在播放时暂停转写队列（官方这套文件接口是
+**进程内单实例**，同时开两个文件必然互相踩）。
 
 归忆侧对应代码：`A1Store.normalizeConverted` / `PcmDecode.decodeWithCodec` /
 `Player.openDinger`（后者已经在用官方路径，且是能正常播放的）。
