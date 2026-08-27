@@ -656,6 +656,213 @@ if (TextUtils.equals(source, "device_voiceprint") || sg7.b()) {
 未追到具体 BLE opcode 来源,推测是本文档第 12 节里仍未解出的 `0x000C`
 主动推送。
 
+---
+
+# 14. 官方能力全量测绘（2026-08-27，基于 8.3.48.3）
+
+来源：`apks/8.3.48.3/`（这台机器上实际在跑的 14 个 split，全量提取）、
+既有 `decompiled/base/sources`、以及归忆已内嵌的
+`app/src/main/java/com/android/dingersdk` + `libDingerSdk.so`。
+
+本节把第 8 节和第 12 节里"尚未掌握"的条目**大部分结清**，并补齐了
+WiFi 快传、文件加密、设备侧命令表三块。
+
+## 14.1 完整命令表（`DingerCommandHelper`，未混淆）
+
+方法名和 JSON 字段名逐字来自反编译，**字段名一个字母都不能改**。
+
+| cmd | hex | 方法 | body 字段 |
+|---|---|---|---|
+| 4 | `0x0004` | `sendResetDevice` | `did` |
+| 8 | `0x0008` | `sendGetRandom` | `corpId`, `did` |
+| 9 | `0x0009` | `sendAuth` | `timestamp`, `payload`, `did` |
+| 256 | `0x0100` | `sendAudioRecordOpt` | `did`, `action`, `params[]` |
+| 257 | `0x0101` | 声纹（见 14.4） | `did`, `action`, `type="voice_print"` |
+| 272 | `0x0110` | `sendGetFileList` | `did`, `s_fid`, `e_fid`, `recently` |
+| 274 | `0x0112` | `sendFileSyncCancel` | `did` |
+| 275 | `0x0113` | `sendFileDelete` | `did`, `fid` |
+| 288 | `0x0120` | `sendOpenAp` | `did`, `type` |
+| 289 | `0x0121` | `sendCloseAp` | `did` |
+| 304 | `0x0130` | `sendGetTransInfo` | `corpId` |
+| 306 | `0x0132` | `sendSyncDevStatus` | `did` |
+| 307 | `0x0133` | `sendConnectDevice` | `corpId`, `did`, `token`, `model`, `timestamp`, `sdk_ver` |
+| 308 | `0x0134` | `sendDisconnectDevice` | `corpId`, `did` |
+| 309 | `0x0135` | `sendQueryFwVersion` | `did`, `new_ver` |
+| 310 | `0x0136` | `sendSysControl` | `did`, `key`, `val` |
+| 311 | `0x0137` | `sendGraySwitchGet/Set/Control` | `did`, `action`(`get`/`set`), `key`, `val`, `params` |
+
+第 8 节的「删除文件」「OTA 固件升级」「电量查询」到此**全部解出**：
+删除是 `0x0113`，OTA 版本查询是 `0x0135`，电量走 `0x0136 sysControl`
+的 `battery_key`。
+
+> 注意 `sendConnectDevice` 用的字段名是 **`corpId`**（驼峰），而
+> `sendGetRandom` 也是 `corpId`。归忆里 `A1Session` 发的是 `corp_id`
+> （下划线）且实测能通过鉴权 —— 说明固件对这个字段名是宽容的，
+> 或者两种都认。**不要据此推断其它字段也宽容。**
+
+## 14.2 WiFi 快传（第 12 节遗留项，已解出）
+
+BLE 只有几十 KB/s（实测 4.8~37 KB/s），一条几小时的录音传不动。
+官方的解法是**让设备开一个 WiFi 热点，手机连上去走 HTTP 下载**。
+
+完整流程：
+
+```
+1. BLE 发 0x0120 openAp {did, type}
+2. 设备回 body: {ssid, passwd, url, ip, port}
+      ip/port 只在灰度开关 qx7.c2() 打开时才读
+3. 手机连上这个热点（ssid + passwd）
+4. 逐条 HTTP GET： <url>/<fid 按 %014d 左补零>
+      例：fid=1787720326 -> GET <url>/00001787720326
+      本地落盘文件名：00001787720326.opus
+5. 传完 BLE 发 0x0121 closeAp {did}
+```
+
+证据：
+- `dingerimpl/wifi/WifiLinkData.java` —— `(ssid, password, url, ip, port)`
+- `defpackage/m62.java:1110-1124` —— openAp 响应解析，字段名是 `passwd` 不是 `password`
+- `dingerimpl/wifi/WifiTransferDialog.java:492-506` —— URL 拼接与 `%014d` 格式化
+- `libDingerSdk.so` 字符串：`WIFI create AP failed` / `WIFI TCP start error`
+  / `WIFI webserver start error` / `WIFI_CREATE_AP` / `WIFI_DESTROY_AP`
+
+**下载下来的仍然是 `.opus` 私有容器**（不是 Ogg）。WiFi 传完之后官方会把
+BLE 同步留下的那份 `.opus` 删掉（`DingerDownloader` 的
+`[insertOrUpdateToDB] delete ble file`）—— 两条通道落的是同一种文件，
+只是快慢不同。
+
+相关事件码（`DingerEvent`）：
+`DINGER_EVENT_KEY_WIFI_OPEN=11` / `CLOSE=12` / `CONNECT=13` / `DISCONNECT=14`。
+
+`0x0130 getTransInfo(corpId)` 的用途尚未追到调用点，名字看像是取传输配置。
+
+## 14.3 文件加密（第 7.5 / 第 8 / 第 12 节遗留项，已解出）
+
+**结论：加密用的密钥就是 `deviceSecret` —— 和 BLE 鉴权是同一个值。**
+
+铁证在 `dingerimpl/clip/DingerAudioHandler.java:117`：
+
+```java
+DingerAudioTools.openAudioFile(
+    path,
+    if7.q().o(Long.parseLong(deviceId)),   // ← 与第 9 节鉴权取密钥的调用完全一致
+    attr);
+```
+
+第 9 节记的鉴权取密钥是 `if7.q().o(deviceId)`，这里一字不差。所以：
+
+- 一个 `deviceSecret` 同时负责**BLE 鉴权**和**录音文件解密**
+- 解密不是单独一步，而是 `openAudioFile` 打开时透明完成
+- `AudioFileAttr.isEncrypted` 由 `openAudioFile` 回填，调用方只读不写
+
+容器头里确实带加密标志。真机 dump 的一条（fid=1787720310）：
+
+```
+RIFF ID: BABA   Wave ID: DTYJ   Version: v1.6
+Bitrate: 32000  Sample rate: 16000  Channels: 1  Bits: 16
+Frame duration: 20 ms   Frame size: 80 bytes   FRAME_HEADER_SIZE: 0
+Algorithm mode: 0   Algorithm gain: 0   **AES flag: 1**
+Data ID: data   Data size: 18640   CRC: 0x817a932e
+```
+
+`AES flag: 1` 是**默认开着**的（设备 `0x0100` 参数里也能看到
+`{"key":"aes","val":1}`），所以第 7.5 节留的"加密开启后 0x0115 是否变密文"
+这个问题其实问反了 —— 它一直就是开的，而 `OpusConvertToOgg` 照样能解出
+正确时长（7120ms 对得上真实 7 秒），说明**SDK 在转换时就把它解开了**。
+
+## 14.4 设备侧命令与能力
+
+- **声纹**：`SendCmdToDevice(257, {did, action, type:"voice_print"})`
+  （`m62.java:1842`）。`action` 取 `start`/`stop`。第 8 节的 `cap_voiceprint` 到此解出。
+- **隐身模式 / AI 按键**：走 `0x0100 sendAudioRecordOpt` 的 params，
+  `key` 分别是 `incognitomode`、`aikey_option`（`m62.java:1429/1520/1942/2065`）。
+- **一次连接后设备回报的参数**（真机实测）：
+  `mode=0`、`delete_after_upload=0`、`aes=1`、`incognitomode=0`、`aikey_option=1000`
+- **能力位**（`0x0133` 响应）：
+  `cap_remark=2`、`cap_voiceprint=1`、`cap_incognitomode=1`、
+  `cap_aikey_option=1`、`cap_schedule=1`
+
+## 14.5 native SDK 全量接口（`DingerAudioTools`）
+
+`libDingerSdk.so`，V2.1.0。按用途分组：
+
+**加解密**：`AESEncrypt(key, plain)` / `AESDecrypt(key, cipher)`
+
+**设备通信**：`InitConfig(json)`、`SendCmdToDevice(cmd, json)`、
+`PushBleRecvData(bytes, len)`、`SendFileSyncCmd(fid, offset, index, count)`、
+`StartSendFile(path)`、`setGraySwitches(map)`、`notifyEvent(a, b)`
+
+**文件读取（官方唯一的解码路径）**：
+`openAudioFile(path, deviceSecret, attr)` → `readAudioFrames(AudioFrameBuffer)`
+→ `seekToPosition(float)` / `seekToSecond(int)` / `getCurrentPosition()`
+→ `AudioFileClose()`；辅助 `getAudioFileAttributes()`、`getAudioFileInfo()`、
+`GetOpusFileSize(path)`
+
+> **这套接口是进程内单实例**：打开/读帧/关闭操作的是同一份全局状态，
+> 同一时刻只能有一个文件在读。归忆里播放器和转写如果都要用，
+> **必须共用同一把锁**。
+
+**格式转换与编辑**：`OpusConvertToOgg(fid)`、
+`ExportAudioWithProgress(param, out, ..., cb)`、
+`MergeFilesWithProgress(params[], out[], cb)`、
+`AudioClipWithProgress(param, cb)`、`SmartClipWithProgress(param, cb)`
+（对应取消：`CancelExportAudio` / `CancelMergeFiles` / `CancelSmartClip`）
+
+**OTA**：`StartOta(json)` / `StopOta()` / `OtaSendDataNotify(bool)`
+
+**设备侧 ASR**：`StartAsr(json)` / `StopAsr()` / `PauseAsr(bool)`
+（事件 `DINGER_EVENT_ASR_RESULT=0`）
+
+**事件码**（`DingerEvent`）：
+`ASR_RESULT=0`、`OTA_RESULT=1`、`OPUS_CONVERT_RESULT=2`、`NAME_TRANSFER_RESULT=3`；
+按键类 `BLE_OPEN=1`/`BLE_CLOSE=2`/`BLE_CONNECT=3`/`BLE_DISCONNECT=4`、
+`WIFI_OPEN=11`/`WIFI_CLOSE=12`/`WIFI_CONNECT=13`/`WIFI_DISCONNECT=14`
+
+## 14.6 `OpusConvertToOgg` 的输出不是标准 Ogg（新发现，归忆踩到了）
+
+真机实测：SDK 转换输出的 `<fid>.ogg` 结构是
+
+```
+偏移 0    42 41 42 41  "BABA"   ← 80 字节私有头原样保留
+偏移 80   4f 67 67 53  "OggS"   ← Ogg 流从这里才开始
+```
+
+SDK 日志自己也写了：`initCovertToOgg ... privateHeaderOffset: 80`。
+
+归忆一度把前 80 字节切掉，得到一个"看起来标准"的 Ogg —— 同步、时长解析
+都正常了，但 **`MediaExtractor` + `MediaCodec` 仍然打不开**
+（configure/start 之后第一次 dequeue 就报
+`Pending dequeue output buffer request cancelled` /
+`Invalid to call at Released state`）。
+
+结合 14.5 可以确定原因：**官方从来不用系统解码器读这些文件**。
+整个官方 App 里读录音只有一条路径 ——
+`openAudioFile(path, deviceSecret, attr)` + `readAudioFrames()`。
+所以那个 Ogg 大概率缺 `OpusHead`/`OpusTags` 之类的必备头，
+只有 SDK 自己认。
+
+**下一步要做的实验**（需要接上手机）：
+
+1. 保留 SDK 原样输出（**不要**切那 80 字节），
+   直接喂 `DingerAudioTools.openAudioFile(<fid>.ogg, deviceSecret, attr)`，
+   看能不能打开、`attr.isEncrypted` 回填成什么。
+2. 如果 1 不行，改喂原始 `<fid>.opus` 私有容器
+   （注意 SDK 转换成功后会自己把 `.opus` 删掉，实验前要先留一份）。
+3. 哪条通，归忆的 `PcmDecode` 就改走哪条，把 `MediaExtractor` 这条
+   留给手机麦克风自录的 WAV。
+
+归忆侧对应代码：`A1Store.normalizeConverted` / `PcmDecode.decodeWithCodec` /
+`Player.openDinger`（后者已经在用官方路径，且是能正常播放的）。
+
+## 14.7 仍未解出
+
+- [ ] `0x0130 getTransInfo` 的调用点与用途
+- [ ] `0x000C` 设备主动推的二进制（第 12 节遗留）
+- [ ] `cap_schedule` 定时任务的具体命令
+- [ ] `0x013F`（第 7.6 节遗留）
+- [ ] WiFi 热点那个 webserver 的完整路由（目前只确认了
+      `GET <url>/<%014d fid>` 这一条）
+
+
 ## 工具
 
 `tools/HidProbe.cs` — 枚举 HID 设备,读取 VID/PID/厂商/产品/序列号/report 能力
