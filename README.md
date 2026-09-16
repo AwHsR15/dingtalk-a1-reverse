@@ -34,8 +34,8 @@ Reverse engineering of the DingTalk A1 / TALIX & DingTalk A1 AI recording card's
 - 鉴权算法:`token = AES-128-CBC(key=deviceSecret[:16], iv=key, pt=random)`,
   已用真实抓包数学验证通过
 - 录音数据在 BLE 传输链路上是否加密的实测结论
-- 私有音频容器 `BABA/DTYJ` 的**完整头部图**与 data 块定长记录排布
-  (含两个不标准之处:`ver ` 没有长度字段、`data` 长度后插了 CRC)
+- 私有音频容器 `BABA/DTYJ` 的**完整头部图**(三处不标准布局)、三种真机变体
+  (记录长 84 / 164 / 80)、头里的**加密标志位**,已用 33 个真机文件验证
 
 ### 内容结构
 
@@ -64,11 +64,12 @@ Reverse engineering of the DingTalk A1 / TALIX & DingTalk A1 AI recording card's
 `upload_stream`、WiFi 热点大文件通道、加密开关的实测影响、
 官方 H5 前端的 JSAPI 契约。
 
-**两边结论有冲突的一处**:他们的 `dtyj_to_ogg.py` 不做任何解密,
-而本项目实测 `AES flag` 默认为 1、包体是密文(裸转封装出的 Ogg
-框架合规但只能解出噪声)。可能是设备/固件差异,也可能是其中一方漏看了。
-`tools/dtyj_parse.py` 用 Opus TOC 集中度来判定到底是哪种情况 ——
-接近 100% 就是明文,接近 1/256 就是密文。
+**两边曾经看似冲突的一处,真机验证后结论是"都对"**:他们的 `dtyj_to_ogg.py`
+不做解密,本项目早先实测包体是密文。用测试机上 33 个真机容器逐一检验后发现:
+**加密是按文件的**,容器头偏移 58 有一个标志位(32 个为 1 的全是密文,1 个为 0 的是明文)。
+他们的转换器对明文原件完全正确,对加密文件只能转出噪声;
+另外容器存在前缀长为 0 的 v1.6 变体,固定按 4 字节切会整体错位。
+`tools/dtyj_parse.py` 会同时给出加密标志和按 Opus TOC 实测的判定。
 
 ### 方法论,不是攻击工具
 
@@ -130,6 +131,9 @@ has it:
   `token = AES-128-CBC(key=deviceSecret[:16], iv=key, pt=random)`,
   verified against real captured (random, token) pairs
 - Whether recorded audio is actually encrypted on the BLE transport (tested, not assumed)
+- The `BABA/DTYJ` private audio container: full 80-byte header map (three non-standard
+  quirks), three real-device variants (record size 84 / 164 / 80), and the per-file
+  **encryption flag** at offset 58 — verified on 33 real files
 
 ### Repository layout
 
@@ -158,12 +162,14 @@ returns `code:501`); and the `BABA/DTYJ` private audio container.
 `upload_stream` switch, the Wi-Fi hotspot bulk-transfer channel, measured
 effects of the encryption switch, and the official H5 front-end JSAPI contract.
 
-**One point where the two disagree**: their `dtyj_to_ogg.py` performs no
-decryption, whereas measurements here show `AES flag` defaults to 1 and the
-payload is ciphertext (a straight remux yields a structurally valid Ogg that
-decodes to noise). This may be a device/firmware difference, or one side may
-have missed it. `tools/dtyj_parse.py` settles it per file using Opus TOC
-concentration: near 100% means plaintext, near 1/256 means ciphertext.
+**An apparent disagreement, resolved on real files: both are right.** Their
+`dtyj_to_ogg.py` does no decryption, while this project measured ciphertext payloads.
+Checking 33 real containers from a test phone shows that **encryption is per file**,
+with a flag byte at header offset 58 (all 32 files with flag 1 are ciphertext; the one
+with flag 0 is plaintext). Their converter is correct for plaintext originals and
+yields noise for encrypted ones; a v1.6 variant with a 0-byte record prefix also
+exists, which a fixed 4-byte prefix would misalign. `tools/dtyj_parse.py` reports
+both the header flag and a verdict measured from Opus TOC bytes.
 
 ### Methodology, not a hacking toolkit
 

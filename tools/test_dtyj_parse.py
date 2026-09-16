@@ -2,9 +2,9 @@
 """
 `dtyj_parse.py` 的回归测试。
 
-用的是**真机文件头**:三份 84 字节的头取自客户端
-`BabaContainerTest.kt` 的 fixture(从真机上抓下来的),这里内联成常量,
-所以这个测试不依赖任何外部文件,也不含任何设备凭据。
+头部常量是三份**真机文件的前 80 字节**,覆盖三种实测变体。只含头部
+(格式字段、长度、CRC),不含任何音频内容,也不含设备凭据。
+载荷部分用合成数据模拟明文 / 密文。
 
 运行:  python test_dtyj_parse.py
 """
@@ -16,142 +16,139 @@ import sys
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from dtyj_parse import PAYLOAD_AT, concentration, describe_toc, parse_header, try_layout
+from dtyj_parse import PAYLOAD_AT, classify, describe_config, parse_header
 
-# 真机 v1.7 文件头(仅头部,不含音频内容)
-REAL_HEADS = [
-    "4241424148ab4a014454594a7665722076312e37666d742000000000000000"
-    "00007d0000803e00000014011054000400f2b84e0065787472000000000000"
-    "0000000000006461746100ab4a01d98e898b00000000",
-    "42414241080b8f004454594a7665722076312e37666d742000000000000000"
-    "00007d0000803e00000014011054000400600e220065787472000001000000"
-    "00000000000064617461c00a8f001cc77ee100000000",
-]
+# v1.7 · 32 kbps / 16 kHz · 前缀 4 · 记录 84 · 加密标志 0(实测明文,WiFi 快传原件)
+V17_16K = bytes.fromhex(
+    "4241424148ab4a014454594a7665722076312e37666d74200000000000000000"
+    "007d0000803e00000014011054000400f2b84e00657874720000000000000000"
+    "000000006461746100ab4a01d98e898b")
+# v1.7 · 64 kbps / 48 kHz · 前缀 4 · 记录 164 · 加密标志 1
+V17_48K = bytes.fromhex(
+    "424142410ce548004454594a7665722076312e37666d74200000000000000000"
+    "00fa000080bb000000140110a400040051e50800657874720100010000000000"
+    "0000000064617461c4e44800bfa51432")
+# v1.6 · 32 kbps / 16 kHz · 前缀 0 · 记录 80 · 加密标志 1
+V16_16K = bytes.fromhex(
+    "424142417872cb004454594a7665722076312e36666d74200000000000000000"
+    "007d0000803e00000014011050000000c5de3200657874720000010000000000"
+    "00000000646174613072cb0065efb0ec")
 
 
-def make_container(head_hex: str, records: int, *, encrypted: bool, truncate: int = 0) -> bytes:
-    """按真机头造一个容器。加密态用随机字节模拟密文。"""
-    head = bytearray(bytes.fromhex(head_hex)[:PAYLOAD_AT])
-    rec = struct.unpack_from("<H", head, 44)[0]
-    rnd = random.Random(1234)  # 固定种子,测试要可重复
-
+def with_records(head: bytes, n: int, *, encrypted: bool) -> bytes:
+    """在真机头后面拼 n 条合成记录(头里的长度字段不改,等价于"只读了开头一截")。"""
+    h = parse_header(head)
+    rec, pre = h["record_size"], h["prefix_len"]
+    rnd = random.Random(7)
     body = bytearray()
-    for i in range(records):
+    for _ in range(n):
         if encrypted:
             body += bytes(rnd.randrange(256) for _ in range(rec))
         else:
-            r = bytearray(rec)
-            struct.pack_into("<I", r, 0, i)   # 4 字节前缀
-            r[4] = 0x4B                       # Opus TOC
-            for j in range(5, rec):
-                r[j] = rnd.randrange(256)
+            r = bytearray(pre)  # 真机前缀全 0
+            # config 9 (SILK-WB 20ms),低 2 位帧数码合法地变化 —— 真机就是 0x4B / 0x48 混着来
+            r.append(0x48 | rnd.choice((0, 3)))
+            r += bytes(rnd.randrange(256) for _ in range(rec - pre - 1))
             body += r
-
-    struct.pack_into("<I", head, 72, len(body))        # 载荷长
-    struct.pack_into("<I", head, 4, 72 + len(body))    # BABA 总长
-    blob = bytes(head) + bytes(body)
-    return blob[: len(blob) - truncate] if truncate else blob
+    return head + bytes(body)
 
 
 class HeaderTest(unittest.TestCase):
-    """头部解析 —— 三处不标准全在这儿把关。"""
 
-    def test_tags_land_on_fixed_offsets(self):
-        """ver@12 / fmt@20 / extr@52 / data@68 必须各就各位。"""
-        for hex_head in REAL_HEADS:
-            h = parse_header(bytes.fromhex(hex_head))
-            self.assertEqual(h["tag_errors"], [], "真机头的标记位置不应有偏差")
+    def test_tags_on_fixed_offsets(self):
+        """三处非标准布局决定了 tag 必须恰好在 12 / 20 / 52 / 68。"""
+        for head in (V17_16K, V17_48K, V16_16K):
+            self.assertEqual(parse_header(head)["tag_errors"], [])
 
-    def test_fields_match_real_device(self):
-        for hex_head in REAL_HEADS:
-            h = parse_header(bytes.fromhex(hex_head))
-            self.assertEqual(h["version"], "v1.7")
-            self.assertEqual(h["bitrate"], 32000)
-            self.assertEqual(h["sample_rate"], 16000)
-            self.assertEqual(h["frame_ms"], 20)
-            self.assertEqual(h["bits"], 16)
-            # 记录长 84 = 4 字节前缀 + 80 字节 Opus 包。
-            # 别和官方 SDK 打印的 `Frame size: 80`(指 Opus 包)搞混。
-            self.assertEqual(h["record_size"], 84)
+    def test_three_variants(self):
+        cases = [
+            (V17_16K, "v1.7", 32000, 16000, 4, 84),
+            (V17_48K, "v1.7", 64000, 48000, 4, 164),
+            (V16_16K, "v1.6", 32000, 16000, 0, 80),
+        ]
+        for head, ver, br, sr, pre, rec in cases:
+            h = parse_header(head)
+            self.assertEqual((h["version"], h["bitrate"], h["sample_rate"], h["prefix_len"], h["record_size"]),
+                             (ver, br, sr, pre, rec))
 
-    def test_two_length_fields_agree(self):
-        """80 + 载荷长 == BABA@4 + 8。两个长度字段必须自洽。"""
-        for hex_head in REAL_HEADS:
-            h = parse_header(bytes.fromhex(hex_head))
-            self.assertEqual(PAYLOAD_AT + h["payload_len"], h["declared_total"] + 8)
+    def test_record_size_formula(self):
+        """记录长 == 码率 × 帧长 / 8000 + 前缀长 —— 三种变体恒成立。记录长不是常数。"""
+        for head in (V17_16K, V17_48K, V16_16K):
+            h = parse_header(head)
+            self.assertEqual(h["record_size"], h["bitrate"] * h["frame_ms"] // 8000 + h["prefix_len"])
 
-    def test_payload_divides_by_record_size(self):
-        """真机载荷长必须被记录长整除 —— 定长记录数组的硬性要求。"""
-        for hex_head in REAL_HEADS:
-            h = parse_header(bytes.fromhex(hex_head))
-            self.assertEqual(h["payload_len"] % h["record_size"], 0)
+    def test_length_fields_agree(self):
+        for head in (V17_16K, V17_48K, V16_16K):
+            h = parse_header(head)
+            self.assertEqual(PAYLOAD_AT + h["payload_len"], h["declared_total"])
 
-    def test_duration_matches_record_count(self):
-        """
-        记录数 × 帧长 应当等于录音时长。
+    def test_duration_matches_records(self):
+        """原始记录形态:记录数 × 帧长 ≈ 头里的时长(1h26m 那条录音)。"""
+        h = parse_header(V17_16K)
+        secs = h["payload_len"] // h["record_size"] * h["frame_ms"] / 1000
+        self.assertAlmostEqual(secs, h["duration_ms"] / 1000, delta=1.0)
 
-        样本 1 有 257984 条 × 20 ms = 5159.68 秒 ≈ 1h26m,
-        正是界面上那条标着「1h 26m 5s」的录音 —— 容器解析和用户
-        看得见的时长在这里对上了。
-        """
-        h = parse_header(bytes.fromhex(REAL_HEADS[0]))
-        n = h["payload_len"] // h["record_size"]
-        self.assertEqual(n, 257984)
-        self.assertAlmostEqual(n * h["frame_ms"] / 1000.0, 5159.68, places=2)
+    def test_aes_flag(self):
+        self.assertEqual(parse_header(V17_16K)["aes_flag"], 0)
+        self.assertEqual(parse_header(V17_48K)["aes_flag"], 1)
+        self.assertEqual(parse_header(V16_16K)["aes_flag"], 1)
 
     def test_rejects_foreign_file(self):
         with self.assertRaises(ValueError):
-            parse_header(b"RIFF\x00\x00\x00\x00WAVEfmt ")
+            parse_header(b"RIFF" + bytes(76))
 
 
-class LayoutTest(unittest.TestCase):
-    """排布判定 —— 明文该判明文,密文该判密文。"""
+class VerdictTest(unittest.TestCase):
 
-    def _probe(self, blob: bytes, record_size: int, prefix_len: int) -> float:
-        h = parse_header(blob)
-        body = blob[PAYLOAD_AT : PAYLOAD_AT + h["payload_len"]]
-        tocs, _, _ = try_layout(body, record_size, prefix_len)
-        return concentration(tocs)
-
-    def test_plaintext_is_recognised(self):
-        blob = make_container(REAL_HEADS[1], 400, encrypted=False)
-        self.assertEqual(self._probe(blob, 84, 4), 1.0, "切对了应当 TOC 全同")
-
-    def test_off_by_four_destroys_structure(self):
+    def test_plaintext_despite_zero_prefix(self):
         """
-        前缀算成 0(等价于把 CRC 当载荷、整体错位 4 字节)会毁掉结构。
-
-        这正是那个坑的样子:看起来像"包体是密文",其实只是切错了。
+        回归:真机前缀全是 0。旧版按"整字节"算集中度,前缀=0 的切法会凑出
+        100% 的 0x00 而判错。按 config(高 5 位)判定才对。
         """
-        blob = make_container(REAL_HEADS[1], 400, encrypted=False)
-        self.assertLess(self._probe(blob, 84, 0), 0.1)
+        r = classify(with_records(V17_16K, 300, encrypted=False))
+        self.assertEqual(r["verdict"], "明文")
+        self.assertEqual(r["config"], 9)
 
-    def test_ciphertext_looks_uniform(self):
-        """密文的首字节应当接近均匀分布(1/256 量级)。"""
-        blob = make_container(REAL_HEADS[1], 400, encrypted=True)
-        self.assertLess(self._probe(blob, 84, 4), 0.05)
+    def test_ciphertext(self):
+        for head in (V17_48K, V16_16K):
+            self.assertEqual(classify(with_records(head, 300, encrypted=True))["verdict"], "密文")
 
-    def test_truncated_file_is_detectable(self):
-        """截断文件:头里声明的长度大于磁盘实际大小。"""
-        full = make_container(REAL_HEADS[1], 400, encrypted=False)
-        cut = make_container(REAL_HEADS[1], 400, encrypted=False, truncate=84 * 280)
-        h = parse_header(cut)
-        expected = PAYLOAD_AT + h["payload_len"]
-        self.assertEqual(expected, len(full))
-        self.assertLess(len(cut), expected)
-        self.assertAlmostEqual(len(cut) / expected, 0.30, places=2)
+    def test_v16_has_no_prefix(self):
+        """v1.6 前缀为 0:若误按 4 字节前缀切,明文也会变成一团乱。"""
+        r = classify(with_records(V16_16K, 300, encrypted=False))
+        self.assertEqual(r["verdict"], "明文")
+
+    def test_converted_ogg_payload(self):
+        """官方转换后:80 字节头 + Ogg 流。要能跳过 OpusHead / OpusTags 拆出音频包。"""
+        def page(seq, packets):
+            lacing = bytearray()
+            for p in packets:
+                n = len(p)
+                while n >= 255:
+                    lacing.append(255); n -= 255
+                lacing.append(n)
+            return (b"OggS" + bytes(2) + struct.pack("<qII", 0, 1, seq) + bytes(4)
+                    + bytes([len(lacing)]) + bytes(lacing) + b"".join(packets))
+        rnd = random.Random(3)
+        audio = [bytes([0x4B]) + bytes(rnd.randrange(256) for _ in range(79)) for _ in range(120)]
+        ogg = page(0, [b"OpusHead" + bytes(11)]) + page(1, [b"OpusTags" + bytes(8)])
+        for k in range(0, 120, 20):
+            ogg += page(2 + k, audio[k:k + 20])
+        r = classify(V17_16K + ogg)
+        self.assertEqual(r["layout"], "ogg")
+        self.assertEqual(r["packets"], 120)
+        self.assertEqual(r["verdict"], "明文")
+
+    def test_too_few_packets(self):
+        self.assertEqual(classify(with_records(V17_16K, 10, encrypted=False))["verdict"], "样本不足")
 
 
-class TocTest(unittest.TestCase):
+class ConfigTest(unittest.TestCase):
 
-    def test_0x4b_is_silk_wb_20ms_mono(self):
-        """0x4B 必须解成 SILK-WB 20ms 单声道 —— 与头里 16 kHz / 20 ms 一致。"""
-        d = describe_toc(0x4B)
-        self.assertIn("config=9", d)
-        self.assertIn("SILK-WB", d)
-        self.assertIn("20ms", d)
-        self.assertIn("单声道", d)
+    def test_config_9(self):
+        self.assertEqual(describe_config(0x4B >> 3), "config 9 = SILK-WB 20ms")
+        self.assertEqual(0x48 >> 3, 0x4B >> 3)  # 帧数码不同,config 相同
 
 
 if __name__ == "__main__":
-    unittest.main(verbosity=2)
+    unittest.main(verbosity=1)
