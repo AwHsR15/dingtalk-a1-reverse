@@ -1,0 +1,238 @@
+{
+  "native_methods": [
+    {
+      "name": "AESDecrypt",
+      "return_type": "String",
+      "parameters": "String str, String str2"
+    },
+    {
+      "name": "AESEncrypt",
+      "return_type": "String",
+      "parameters": "String str, String str2"
+    },
+    {
+      "name": "AudioClipWithProgress",
+      "return_type": "void",
+      "parameters": "AudioClipParam audioClipParam, AudioClipCallback audioClipCallback"
+    },
+    {
+      "name": "AudioFileClose",
+      "return_type": "void",
+      "parameters": ""
+    },
+    {
+      "name": "CancelExportAudio",
+      "return_type": "boolean",
+      "parameters": ""
+    },
+    {
+      "name": "CancelMergeFiles",
+      "return_type": "boolean",
+      "parameters": ""
+    },
+    {
+      "name": "CancelSmartClip",
+      "return_type": "boolean",
+      "parameters": ""
+    },
+    {
+      "name": "ExportAudioWithProgress",
+      "return_type": "int",
+      "parameters": "AudioFileParam audioFileParam, String str, String[] strArr, ExportProgressCallback exportProgressCallback"
+    },
+    {
+      "name": "GetOpusFileSize",
+      "return_type": "long",
+      "parameters": "String str"
+    },
+    {
+      "name": "GetSdkVer",
+      "return_type": "String",
+      "parameters": ""
+    },
+    {
+      "name": "InitConfig",
+      "return_type": "int",
+      "parameters": "String str"
+    },
+    {
+      "name": "MergeFilesWithProgress",
+      "return_type": "int",
+      "parameters": "AudioFileParam[] audioFileParamArr, String[] strArr, MergeProgressCallback mergeProgressCallback"
+    },
+    {
+      "name": "OpusConvertToOgg",
+      "return_type": "int",
+      "parameters": "String str"
+    },
+    {
+      "name": "OtaSendDataNotify",
+      "return_type": "void",
+      "parameters": "boolean z"
+    },
+    {
+      "name": "PauseAsr",
+      "return_type": "void",
+      "parameters": "boolean z"
+    },
+    {
+      "name": "PushBleRecvData",
+      "return_type": "int",
+      "parameters": "byte[] bArr, int i"
+    },
+    {
+      "name": "SendCmdToDevice",
+      "return_type": "int",
+      "parameters": "int i, String str"
+    },
+    {
+      "name": "SendFileSyncCmd",
+      "return_type": "int",
+      "parameters": "String str, int i, int i2, int i3"
+    },
+    {
+      "name": "SetCallback",
+      "return_type": "void",
+      "parameters": ""
+    },
+    {
+      "name": "SmartClipWithProgress",
+      "return_type": "void",
+      "parameters": "AudioClipParam audioClipParam, SmartClipCallback smartClipCallback"
+    },
+    {
+      "name": "StartAsr",
+      "return_type": "int",
+      "parameters": "String str"
+    },
+    {
+      "name": "StartOta",
+      "return_type": "int",
+      "parameters": "String str"
+    },
+    {
+      "name": "StartSendFile",
+      "return_type": "int",
+      "parameters": "String str"
+    },
+    {
+      "name": "StopAsr",
+      "return_type": "int",
+      "parameters": ""
+    },
+    {
+      "name": "StopOta",
+      "return_type": "int",
+      "parameters": ""
+    },
+    {
+      "name": "closeDownlinkStream",
+      "return_type": "int",
+      "parameters": "long j"
+    },
+    {
+      "name": "decodeOpusFrame",
+      "return_type": "byte[]",
+      "parameters": "byte[] bArr, int i"
+    },
+    {
+      "name": "getAudioFileAttributes",
+      "return_type": "String",
+      "parameters": ""
+    },
+    {
+      "name": "getAudioFileInfo",
+      "return_type": "String",
+      "parameters": ""
+    },
+    {
+      "name": "getCurrentPosition",
+      "return_type": "float",
+      "parameters": ""
+    },
+    {
+      "name": "notifyEvent",
+      "return_type": "void",
+      "parameters": "int i, int i2"
+    },
+    {
+      "name": "openAudioFile",
+      "return_type": "boolean",
+      "parameters": "String str, String str2, AudioFileAttr audioFileAttr"
+    },
+    {
+      "name": "openDownlinkStream",
+      "return_type": "long",
+      "parameters": "String str, int i"
+    },
+    {
+      "name": "readAudioFrames",
+      "return_type": "int",
+      "parameters": "AudioFrameBuffer audioFrameBuffer"
+    },
+    {
+      "name": "resetOpusDecoder",
+      "return_type": "void",
+      "parameters": ""
+    },
+    {
+      "name": "seekToPosition",
+      "return_type": "boolean",
+      "parameters": "float f"
+    },
+    {
+      "name": "seekToSecond",
+      "return_type": "boolean",
+      "parameters": "int i"
+    },
+    {
+      "name": "sendDownlinkStreamFramePcm",
+      "return_type": "int",
+      "parameters": "long j, byte[] bArr, int i, int i2"
+    },
+    {
+      "name": "sendDownlinkStreamFrameRawOpus",
+      "return_type": "int",
+      "parameters": "long j, byte[] bArr, int i"
+    },
+    {
+      "name": "setAudioProcessMode",
+      "return_type": "void",
+      "parameters": "int i"
+    },
+    {
+      "name": "setGraySwitches",
+      "return_type": "void",
+      "parameters": "Map<String, Boolean> map"
+    },
+    {
+      "name": "setUpstreamChannelCallback",
+      "return_type": "void",
+      "parameters": "int i"
+    }
+  ],
+  "current_app_native_names_added": [
+    "closeDownlinkStream",
+    "decodeOpusFrame",
+    "openDownlinkStream",
+    "resetOpusDecoder",
+    "sendDownlinkStreamFramePcm",
+    "sendDownlinkStreamFrameRawOpus",
+    "setAudioProcessMode",
+    "setUpstreamChannelCallback"
+  ],
+  "current_app_native_names_removed": [],
+  "core_jar_sha256": "fa21134eb5ebb76be28f290f0e2e66a063b420dd1e554f267a54f1bd5a6d3f48",
+  "compiled_core_sources": [
+    "DingerAudioTools",
+    "RecvMsgCallback",
+    "CalledByNative",
+    "AudioFileParam",
+    "AudioFileAttr",
+    "AudioFrameBuffer",
+    "AudioClipParam",
+    "ExportProgressCallback",
+    "MergeProgressCallback"
+  ],
+  "validation": "javac --release 8 succeeds; 42 method names match ELF JNI exports; JNI descriptors and runtime not yet accepted"
+}

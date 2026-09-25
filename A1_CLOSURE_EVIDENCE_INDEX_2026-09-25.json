@@ -1,0 +1,42 @@
+[
+  {
+    "path": "tools/audio_stream_metadata.py",
+    "size": 3314,
+    "sha256": "41dad5b7b866480efdfb53d9231e69604f97f4484fde54dc5cc57b6cc5eec210"
+  },
+  {
+    "path": "A1_AUDIO_METADATA_REPLAY_2026-09-25.json",
+    "size": 983,
+    "sha256": "46cd7b6e458693f451d76c3a36cf5a7cb49edab5bc3d85ac1f034f1f949de13b"
+  },
+  {
+    "path": "apks/8.5.8.3/work/audio_closure_disassembly.py",
+    "size": 2398,
+    "sha256": "a09f6d816138d92f834596c6e63d9e7d873c13188d80b60769858660c1fbb501"
+  },
+  {
+    "path": "apks/8.5.8.3/work/audio_closure_disassembly.txt",
+    "size": 328276,
+    "sha256": "5e541a9a36c5673a3cd420189f0e88c17a8cbb69a4b4ef6137a9d8e91b816286"
+  },
+  {
+    "path": "apks/8.5.8.3/work/audio_response_callable.txt",
+    "size": 2132,
+    "sha256": "3ea26debc7bcd8bad6b4f131977c745225beaa48e910d9247cbd48dba5913607"
+  },
+  {
+    "path": "apks/8.5.8.3/work/src/sources/defpackage/o98.java",
+    "size": 11205,
+    "sha256": "e30e5f5091344b078620c6b6851a33e2b8166e4d06386922dfd839ca8c45114c"
+  },
+  {
+    "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/data/DeviceInfoH5.java",
+    "size": 2710,
+    "sha256": "08c295b70cae836ca2d0cebaed39a266179c9fe3af14004ee65c9ebcd3ae395f"
+  },
+  {
+    "path": "apks/8.5.8.3/work/cloud28/sources/com/dingtalk/device/client/DeviceIService.java",
+    "size": 4682,
+    "sha256": "532075bbebee6bfd5576c3242d2522a6b09f7c4c119e365ee3c7a8cc6327569b"
+  }
+]

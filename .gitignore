@@ -18,3 +18,21 @@ official_ui/
 
 # 官方 APK 原包(460MB 第三方专有二进制,单文件超过 GitHub 100MB 上限)
 apks/
+
+# 用户配置、录音与调试材料；官方后台仅在vendor指定目录显式收录
+.env
+.env.*
+!.env.example
+.a1-device.json
+owned-device-credentials.json
+PreferenceUtils.xml
+verify_pairs.json
+*.btsnoop
+*.pcap
+*.pcapng
+*.wav
+*.opus
+*.ogg
+*.dtyj
+*.apk
+bugreport*.zip

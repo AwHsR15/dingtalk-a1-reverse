@@ -1,0 +1,2433 @@
+{
+  "version": "8.5.8.3",
+  "date": "2026-09-25",
+  "scope": "offline static index, not feature validation",
+  "artifacts": {
+    "base.apk": {
+      "bytes": 398237826,
+      "sha256": "f2bacad38dde7159ac36c5550fc181b6c56c2f142252c9c9ef942bebb907fe7f"
+    },
+    "split_demand1.apk": {
+      "bytes": 7689145,
+      "sha256": "d4c0d3815debc17866bce292c4aa6b7d84200b56a00b6f3dae69f6a5cb73b569"
+    },
+    "work/classes19.dex": {
+      "bytes": 6067044,
+      "sha256": "47a37ba0caf77daed57dcfcd2f13007627f1c6bb4a74ef71b8f4c894e491d87e"
+    },
+    "work/libDingerSdk.so": {
+      "bytes": 7481128,
+      "sha256": "61572524ea708221e99fe8d1c7ab977b84c20050103b97a0fceb01db69fc2c41"
+    },
+    "work/DingerInterfaceImpl_fallback.java": {
+      "bytes": 671606,
+      "sha256": "ccee0039e4bdf75ac92e778b2d2b7bb7c18b08e2ad171d7ea1705fe8b02117d1",
+      "note": "k2 method starts at line 13073; corroborating fallback, not original source"
+    }
+  },
+  "source_indexes": {
+    "defpackage/lj2.java": {
+      "sha256": "7d94b20eeb1d55c7546749f3813d917f4794526294942ef669e389fe83907330",
+      "lines": 2747,
+      "method_lines": [
+        {
+          "line": 1436,
+          "declaration": "public static lj2 D() {"
+        },
+        {
+          "line": 1440,
+          "declaration": "public void A(long j2, int i2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 1466,
+          "declaration": "public int B(long j2, @Nullable DingerFileListResult dingerFileListResult) {"
+        },
+        {
+          "line": 1487,
+          "declaration": "public void C(Callback<Boolean> callback) throws JSONException {"
+        },
+        {
+          "line": 1524,
+          "declaration": "public void E(String str, Callback<String> callback) {"
+        },
+        {
+          "line": 1553,
+          "declaration": "public void F(Callback<Integer> callback) throws JSONException {"
+        },
+        {
+          "line": 1587,
+          "declaration": "public void G(Callback<Integer> callback) throws JSONException {"
+        },
+        {
+          "line": 1622,
+          "declaration": "public void H(@NonNull WifiType wifiType, Callback<WifiLinkData> callback) {"
+        },
+        {
+          "line": 1626,
+          "declaration": "public final void I(@NonNull WifiType wifiType, Callback<WifiLinkData> callback) throws JSONException {"
+        },
+        {
+          "line": 1649,
+          "declaration": "public long J(String str, int i2) {"
+        },
+        {
+          "line": 1654,
+          "declaration": "public void K(long j2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 1671,
+          "declaration": "public final JSONObject L(int i2, int i3, int i4, IObserver<Integer> iObserver) {"
+        },
+        {
+          "line": 1715,
+          "declaration": "public final JSONObject M(int i2, int i3, IObserver<Integer> iObserver) {"
+        },
+        {
+          "line": 1719,
+          "declaration": "public void N(long j2, String str, Callback<DeviceFwInfo> callback) {"
+        },
+        {
+          "line": 1744,
+          "declaration": "public void O(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 1759,
+          "declaration": "public void P(String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 1784,
+          "declaration": "public void Q(int i2, JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 1814,
+          "declaration": "public final int R(int i2, @NonNull JSONObject jSONObject) {"
+        },
+        {
+          "line": 1820,
+          "declaration": "public void S(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 1851,
+          "declaration": "public void T(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 1891,
+          "declaration": "public void U(String str, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 1904,
+          "declaration": "public int V(long j2, byte[] bArr, int i2, int i3) {"
+        },
+        {
+          "line": 1909,
+          "declaration": "public void W(String str, String str2, int i2, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 1929,
+          "declaration": "public void X(long j2, String str, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 1963,
+          "declaration": "public void Y(int i2, Callback<Integer> callback) throws JSONException {"
+        },
+        {
+          "line": 2001,
+          "declaration": "public void Z(boolean z2, Callback<Boolean> callback) throws JSONException {"
+        },
+        {
+          "line": 2039,
+          "declaration": "public void a0(boolean z2, Callback<Boolean> callback) {"
+        },
+        {
+          "line": 2077,
+          "declaration": "public void b0(boolean z2, Callback<Boolean> callback) {"
+        },
+        {
+          "line": 2082,
+          "declaration": "public final void c0(boolean z2, boolean z3, Callback<Boolean> callback) throws JSONException {"
+        },
+        {
+          "line": 2124,
+          "declaration": "public void d0(boolean z2, Callback<Boolean> callback) throws JSONException {"
+        },
+        {
+          "line": 2129,
+          "declaration": "public void e0(boolean z2) throws JSONException {"
+        },
+        {
+          "line": 2151,
+          "declaration": "public void f0(int i2, Callback<Integer> callback) throws JSONException {"
+        },
+        {
+          "line": 2186,
+          "declaration": "public void g0(@NonNull ScheduleObject scheduleObject, @Nullable Callback<Void> callback) throws JSONException {"
+        },
+        {
+          "line": 2220,
+          "declaration": "public void h0(int i2) {"
+        },
+        {
+          "line": 2225,
+          "declaration": "public void i0(int i2, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 2255,
+          "declaration": "public void j0(long j2, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 2260,
+          "declaration": "public final JSONObject k(@NonNull Map<String, Object> map) throws JSONException {"
+        },
+        {
+          "line": 2280,
+          "declaration": "public void k0(long j2, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 2285,
+          "declaration": "public void l(Callback<Void> callback) {"
+        },
+        {
+          "line": 2305,
+          "declaration": "public void l0(int i2, Callback<Integer> callback) throws JSONException {"
+        },
+        {
+          "line": 2343,
+          "declaration": "public final <T> boolean m(String str, Callback<T> callback) {"
+        },
+        {
+          "line": 2355,
+          "declaration": "public void m0(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 2359,
+          "declaration": "public final <T> boolean n(String str, Callback<T> callback) {"
+        },
+        {
+          "line": 2375,
+          "declaration": "public int n0(long r6, int r8, int r9, com.alibaba.android.dingtalk.common.Callback<org.json.JSONObject> r10, boolean r11, int r12) {"
+        },
+        {
+          "line": 2473,
+          "declaration": "public void o(long j2, int i2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 2489,
+          "declaration": "public void o0(@NonNull IotCtrlCommand iotCtrlCommand, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 2513,
+          "declaration": "public void p(Callback<Void> callback) {"
+        },
+        {
+          "line": 2517,
+          "declaration": "public void p0(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 2540,
+          "declaration": "public final void q(Callback<Void> callback) {"
+        },
+        {
+          "line": 2560,
+          "declaration": "public int r(long j2) {"
+        },
+        {
+          "line": 2565,
+          "declaration": "public void s(long j2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 2584,
+          "declaration": "public void t(String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 2609,
+          "declaration": "public void u(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 2634,
+          "declaration": "public long v() {"
+        },
+        {
+          "line": 2638,
+          "declaration": "public synchronized void w(long j2, Callback<DingerDeviceStatus> callback) {"
+        },
+        {
+          "line": 2666,
+          "declaration": "public void x(Callback<Boolean> callback) throws JSONException {"
+        },
+        {
+          "line": 2703,
+          "declaration": "public int y(long j2, int i2, int i3, String str) {"
+        },
+        {
+          "line": 2723,
+          "declaration": "public int z(long j2, String str) {"
+        }
+      ]
+    },
+    "defpackage/pt8.java": {
+      "sha256": "7282c51e88cab80815ca7664f472b0ee71faf916a180de16d51f91fbcdeabd26",
+      "lines": 5697,
+      "method_lines": [
+        {
+          "line": 2752,
+          "declaration": "public /* synthetic */ void A2() {"
+        },
+        {
+          "line": 2760,
+          "declaration": "public static /* synthetic */ int B2(H5DataInfo h5DataInfo, H5DataInfo h5DataInfo2) {"
+        },
+        {
+          "line": 2764,
+          "declaration": "public static /* synthetic */ int D2(H5DataInfo h5DataInfo, H5DataInfo h5DataInfo2) {"
+        },
+        {
+          "line": 2769,
+          "declaration": "public /* synthetic */ void E2() {"
+        },
+        {
+          "line": 2778,
+          "declaration": "public /* synthetic */ void F2() {"
+        },
+        {
+          "line": 2787,
+          "declaration": "public /* synthetic */ void G2(String str) {"
+        },
+        {
+          "line": 2813,
+          "declaration": "public /* synthetic */ void H2() {"
+        },
+        {
+          "line": 2834,
+          "declaration": "public /* synthetic */ void I2(BleDeviceState bleDeviceState) throws NumberFormatException {"
+        },
+        {
+          "line": 2931,
+          "declaration": "public static /* synthetic */ void J2(DingerEntryObject dingerEntryObject, Callback callback, DingerEntryObject dingerEntryObject2) {"
+        },
+        {
+          "line": 2947,
+          "declaration": "public /* synthetic */ void K2(byte[] bArr, int i2, int i3) {"
+        },
+        {
+          "line": 2960,
+          "declaration": "public /* synthetic */ void L2() {"
+        },
+        {
+          "line": 2974,
+          "declaration": "public /* synthetic */ void M2() {"
+        },
+        {
+          "line": 2988,
+          "declaration": "public /* synthetic */ void N2(String str) {"
+        },
+        {
+          "line": 2992,
+          "declaration": "public static /* synthetic */ int W0(pt8 pt8Var) {"
+        },
+        {
+          "line": 2998,
+          "declaration": "public static pt8 Z1() {"
+        },
+        {
+          "line": 3002,
+          "declaration": "public static void u4(String str) {"
+        },
+        {
+          "line": 3014,
+          "declaration": "public static /* synthetic */ void y2(ApiEventListener apiEventListener, int i2, String str) {"
+        },
+        {
+          "line": 3021,
+          "declaration": "public static /* synthetic */ int z(pt8 pt8Var, int i2) {"
+        },
+        {
+          "line": 3027,
+          "declaration": "public static /* synthetic */ void z2(final ApiEventListener apiEventListener, AudioFileParam audioFileParam, String str) {"
+        },
+        {
+          "line": 3049,
+          "declaration": "public void A1(DingerEntryObject dingerEntryObject, Callback<DingerEntryObject> callback) {"
+        },
+        {
+          "line": 3054,
+          "declaration": "public void A3(DingerEventCallback dingerEventCallback) {"
+        },
+        {
+          "line": 3061,
+          "declaration": "public void B1(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3066,
+          "declaration": "public void B3(IDingerStreamDataObserver iDingerStreamDataObserver) {"
+        },
+        {
+          "line": 3073,
+          "declaration": "public void C1(List<H5DataInfo> list, List<H5DataInfo> list2, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 3105,
+          "declaration": "public void C3(long j2, String str) {"
+        },
+        {
+          "line": 3110,
+          "declaration": "public final void D1(List<H5DataInfo> list, List<H5DataInfo> list2, int i2, boolean z2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3138,
+          "declaration": "public void D3() {"
+        },
+        {
+          "line": 3146,
+          "declaration": "public void E1(List<H5DataInfo> list, List<H5DataInfo> list2, int i2, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 3184,
+          "declaration": "public final void E3(long j2) {"
+        },
+        {
+          "line": 3190,
+          "declaration": "public final void F1(DeviceModel deviceModel, String str, String str2, long j2, int i2) throws JSONException {"
+        },
+        {
+          "line": 3209,
+          "declaration": "public void F3(long j2, long j3) {"
+        },
+        {
+          "line": 3217,
+          "declaration": "public final void G1(DingerEntryObject dingerEntryObject) throws JSONException {"
+        },
+        {
+          "line": 3231,
+          "declaration": "public void G3() {"
+        },
+        {
+          "line": 3237,
+          "declaration": "public void H1(@NonNull String str, @NonNull String str2) {"
+        },
+        {
+          "line": 3241,
+          "declaration": "public final String H3() {"
+        },
+        {
+          "line": 3251,
+          "declaration": "public final void I1(final DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 3266,
+          "declaration": "public void I3() {"
+        },
+        {
+          "line": 3273,
+          "declaration": "public final void J1(@NonNull DingerEntryObject dingerEntryObject, @NonNull String str, ApiEventListener<String> apiEventListener) {"
+        },
+        {
+          "line": 3319,
+          "declaration": "public final void J3(@androidx.annotation.NonNull java.util.List<com.alibaba.dingtalk.dingerimpl.data.DingerFileListResult.FileData> r21) {"
+        },
+        {
+          "line": 3327,
+          "declaration": "public final void K1(@NonNull DingerEntryObject dingerEntryObject, @NonNull String str, ApiEventListener<String> apiEventListener) {"
+        },
+        {
+          "line": 3362,
+          "declaration": "public final void K3() throws JSONException {"
+        },
+        {
+          "line": 3379,
+          "declaration": "public final void L1(List<H5DataInfo> list, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3398,
+          "declaration": "public void L3(SyncSource syncSource) {"
+        },
+        {
+          "line": 3402,
+          "declaration": "public final void M1(@NonNull DingerEntryObject dingerEntryObject, @NonNull String str, ApiEventListener<String> apiEventListener) {"
+        },
+        {
+          "line": 3409,
+          "declaration": "public final void M3() {"
+        },
+        {
+          "line": 3419,
+          "declaration": "public final void N1(List<H5DataInfo> list, List<H5DataInfo> list2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3427,
+          "declaration": "public final void N3() {"
+        },
+        {
+          "line": 3437,
+          "declaration": "public final void O1(H5DataInfo h5DataInfo, String str, ExportProgressCallback exportProgressCallback, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3459,
+          "declaration": "public final void O2(long j2) {"
+        },
+        {
+          "line": 3466,
+          "declaration": "public void O3(boolean z2) throws JSONException {"
+        },
+        {
+          "line": 3480,
+          "declaration": "public final void P1(List<H5DataInfo> list, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3509,
+          "declaration": "public void P2(List<H5DataInfo> list, List<H5DataInfo> list2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3538,
+          "declaration": "public void P3(Callback<Void> callback) {"
+        },
+        {
+          "line": 3542,
+          "declaration": "public void Q1(@NonNull JSONObject jSONObject, @Nullable ApiEventListener<String> apiEventListener) {"
+        },
+        {
+          "line": 3575,
+          "declaration": "public final oco Q2(oco ocoVar, oco ocoVar2) {"
+        },
+        {
+          "line": 3591,
+          "declaration": "public final void Q3(int i2, boolean z2) {"
+        },
+        {
+          "line": 3603,
+          "declaration": "public void R1(String str, @NonNull String str2, ApiEventListener<String> apiEventListener) {"
+        },
+        {
+          "line": 3616,
+          "declaration": "public void R2() {"
+        },
+        {
+          "line": 3676,
+          "declaration": "public void R3(Callback<JSONObject> callback, String str, boolean z2, String str2) {"
+        },
+        {
+          "line": 3683,
+          "declaration": "public void S1(List<H5DataInfo> list, List<H5DataInfo> list2, String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3708,
+          "declaration": "public void S2(long j2, String str) throws JSONException {"
+        },
+        {
+          "line": 3725,
+          "declaration": "public void S3(String str, BleConnectInfo bleConnectInfo) {"
+        },
+        {
+          "line": 3743,
+          "declaration": "public final JSONObject T1(List<H5DataInfo> list) throws JSONException {"
+        },
+        {
+          "line": 3758,
+          "declaration": "public final void T2(String str) {"
+        },
+        {
+          "line": 3766,
+          "declaration": "public final void T3(String str, BleConnectInfo bleConnectInfo) {"
+        },
+        {
+          "line": 3796,
+          "declaration": "public String U1(String str) {"
+        },
+        {
+          "line": 3804,
+          "declaration": "public final void U2(int i2, String str) {"
+        },
+        {
+          "line": 3811,
+          "declaration": "public final void U3() {"
+        },
+        {
+          "line": 3824,
+          "declaration": "public String V1(int i2) {"
+        },
+        {
+          "line": 3828,
+          "declaration": "public final void V2(long j2, String str, boolean z2) {"
+        },
+        {
+          "line": 3866,
+          "declaration": "public void V3(OtaInfo otaInfo, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3880,
+          "declaration": "public xw6 W1() {"
+        },
+        {
+          "line": 3884,
+          "declaration": "public void W2(long j2) throws JSONException {"
+        },
+        {
+          "line": 3896,
+          "declaration": "public final void W3() {"
+        },
+        {
+          "line": 3902,
+          "declaration": "public ms8 X1() {"
+        },
+        {
+          "line": 3911,
+          "declaration": "public void X2(DtIotEvent dtIotEvent) {"
+        },
+        {
+          "line": 3919,
+          "declaration": "public final void X3() {"
+        },
+        {
+          "line": 3928,
+          "declaration": "public cs8 Y1() {"
+        },
+        {
+          "line": 3932,
+          "declaration": "public void Y2(int i2) throws JSONException {"
+        },
+        {
+          "line": 3946,
+          "declaration": "public void Y3(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3956,
+          "declaration": "public final void Z2(byte[] bArr, int i2, String str) {"
+        },
+        {
+          "line": 3963,
+          "declaration": "public final void Z3() {"
+        },
+        {
+          "line": 3972,
+          "declaration": "public List<Long> a2() {"
+        },
+        {
+          "line": 3976,
+          "declaration": "public void a3() throws JSONException {"
+        },
+        {
+          "line": 3988,
+          "declaration": "public void a4(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4008,
+          "declaration": "public Map<Long, Long> b2() {"
+        },
+        {
+          "line": 4012,
+          "declaration": "public final void b3(String str) throws JSONException {"
+        },
+        {
+          "line": 4052,
+          "declaration": "public final void b4(boolean z2) throws JSONException {"
+        },
+        {
+          "line": 4066,
+          "declaration": "public List<Long> c2() {"
+        },
+        {
+          "line": 4070,
+          "declaration": "public void c3(@NonNull DingerFileListResult dingerFileListResult) {"
+        },
+        {
+          "line": 4077,
+          "declaration": "public final void c4(JSONObject jSONObject, boolean z2) {"
+        },
+        {
+          "line": 4095,
+          "declaration": "public void d2(RecordTaskDTO recordTaskDTO) throws JSONException {"
+        },
+        {
+          "line": 4134,
+          "declaration": "public void d3(JSONObject jSONObject) {"
+        },
+        {
+          "line": 4151,
+          "declaration": "public void d4(long j2) {"
+        },
+        {
+          "line": 4157,
+          "declaration": "public final void e1(int i2, int i3, String str) {"
+        },
+        {
+          "line": 4184,
+          "declaration": "public final void C2(DingerEntryObject dingerEntryObject) throws JSONException, NumberFormatException {"
+        },
+        {
+          "line": 4219,
+          "declaration": "public final void e3(JSONObject jSONObject) throws JSONException {"
+        },
+        {
+          "line": 4255,
+          "declaration": "public void e4(ms8 ms8Var) {"
+        },
+        {
+          "line": 4268,
+          "declaration": "public final void f1(long r22, com.dingtalk.dtiot_device_task.models.DeviceTaskDTO r24, java.lang.String r25) throws org.json.JSONException {"
+        },
+        {
+          "line": 4276,
+          "declaration": "public final void f2(String str, int i2) {"
+        },
+        {
+          "line": 4286,
+          "declaration": "public final void f3(JSONObject jSONObject) {"
+        },
+        {
+          "line": 4382,
+          "declaration": "public final void f4() {"
+        },
+        {
+          "line": 4395,
+          "declaration": "public final void g1(@NonNull final AudioFileParam audioFileParam, @NonNull final String str, final ApiEventListener<String> apiEventListener) {"
+        },
+        {
+          "line": 4405,
+          "declaration": "public final void g2(int i2, String str) throws JSONException {"
+        },
+        {
+          "line": 4423,
+          "declaration": "public final void g3(String str) throws JSONException {"
+        },
+        {
+          "line": 4503,
+          "declaration": "public void g4(String str, String str2, String str3) {"
+        },
+        {
+          "line": 4510,
+          "declaration": "public DingerDeviceStatus h1(long j2, DeviceModel deviceModel, String str, String str2, int i2) {"
+        },
+        {
+          "line": 4527,
+          "declaration": "public final void h2(String str) {"
+        },
+        {
+          "line": 4579,
+          "declaration": "public final void h3(String str) {"
+        },
+        {
+          "line": 4595,
+          "declaration": "public void h4(final String str) {"
+        },
+        {
+          "line": 4637,
+          "declaration": "public void i1(DeviceModel deviceModel) throws JSONException {"
+        },
+        {
+          "line": 4652,
+          "declaration": "public final void i2() throws JSONException {"
+        },
+        {
+          "line": 4674,
+          "declaration": "public void i3() {"
+        },
+        {
+          "line": 4680,
+          "declaration": "public final void i4(String str) {"
+        },
+        {
+          "line": 4684,
+          "declaration": "public final void j1(String str) {"
+        },
+        {
+          "line": 4698,
+          "declaration": "public final void j2(JSONObject jSONObject) throws JSONException {"
+        },
+        {
+          "line": 4722,
+          "declaration": "public final void j3(long j2, oco ocoVar, String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4726,
+          "declaration": "public final void j4(String str) {"
+        },
+        {
+          "line": 4730,
+          "declaration": "public final void k1(String str) {"
+        },
+        {
+          "line": 4740,
+          "declaration": "public final void k2(String str) {"
+        },
+        {
+          "line": 4762,
+          "declaration": "public void k3(long j2) {"
+        },
+        {
+          "line": 4775,
+          "declaration": "public void k4() {"
+        },
+        {
+          "line": 4782,
+          "declaration": "public void l1(Callback<Void> callback) {"
+        },
+        {
+          "line": 4786,
+          "declaration": "public final void l2(String str) throws JSONException {"
+        },
+        {
+          "line": 4823,
+          "declaration": "public void l3(long j2, long j3) {"
+        },
+        {
+          "line": 4842,
+          "declaration": "public void l4(String str) {"
+        },
+        {
+          "line": 4856,
+          "declaration": "public void m1(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4868,
+          "declaration": "public final void m2() {"
+        },
+        {
+          "line": 4878,
+          "declaration": "public final void m3(String str) {"
+        },
+        {
+          "line": 4885,
+          "declaration": "public final void m4() {"
+        },
+        {
+          "line": 4920,
+          "declaration": "public void n1(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4928,
+          "declaration": "public final void n2() {"
+        },
+        {
+          "line": 4938,
+          "declaration": "public final void n3() {"
+        },
+        {
+          "line": 4945,
+          "declaration": "public void n4(int i2, IObserver<Integer> iObserver) {"
+        },
+        {
+          "line": 4951,
+          "declaration": "public final void o1() {"
+        },
+        {
+          "line": 4961,
+          "declaration": "public int o2() throws JSONException {"
+        },
+        {
+          "line": 5030,
+          "declaration": "public final void o3() {"
+        },
+        {
+          "line": 5037,
+          "declaration": "public void o4(DingerInterface.PushHandler pushHandler) {"
+        },
+        {
+          "line": 5041,
+          "declaration": "public void p1(boolean z2) {"
+        },
+        {
+          "line": 5055,
+          "declaration": "public final void p2(Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 5067,
+          "declaration": "public final void p3() {"
+        },
+        {
+          "line": 5074,
+          "declaration": "public void p4(DingerCallback<ms8> dingerCallback) {"
+        },
+        {
+          "line": 5078,
+          "declaration": "public void q(long j2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5083,
+          "declaration": "public final void q1() {"
+        },
+        {
+          "line": 5093,
+          "declaration": "public final boolean q2(long j2) {"
+        },
+        {
+          "line": 5104,
+          "declaration": "public void q3(String str, oco ocoVar, Callback<JSONObject> callback, String str2) {"
+        },
+        {
+          "line": 5121,
+          "declaration": "public void q4(DingerEventCallback dingerEventCallback) {"
+        },
+        {
+          "line": 5127,
+          "declaration": "public final void r1(DingerEntryObject dingerEntryObject, Callback<Boolean> callback) {"
+        },
+        {
+          "line": 5141,
+          "declaration": "public final boolean r2() {"
+        },
+        {
+          "line": 5158,
+          "declaration": "public void r3(long j2, String str, oco ocoVar, Callback<JSONObject> callback, String str2) {"
+        },
+        {
+          "line": 5204,
+          "declaration": "public void r4(IDingerStreamDataObserver iDingerStreamDataObserver) {"
+        },
+        {
+          "line": 5210,
+          "declaration": "public void s1() {"
+        },
+        {
+          "line": 5225,
+          "declaration": "public final boolean s2(BleConnectInfo bleConnectInfo) {"
+        },
+        {
+          "line": 5242,
+          "declaration": "public final void s3(String str) {"
+        },
+        {
+          "line": 5250,
+          "declaration": "public final void s4(List<H5DataInfo> list, int i2) {"
+        },
+        {
+          "line": 5274,
+          "declaration": "public final void t1(List<H5DataInfo> list, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5316,
+          "declaration": "public boolean t2() {"
+        },
+        {
+          "line": 5320,
+          "declaration": "public final void t3(String str) {"
+        },
+        {
+          "line": 5329,
+          "declaration": "public final void t4(List<H5DataInfo> list, long j2) {"
+        },
+        {
+          "line": 5346,
+          "declaration": "public final void u1(String str) {"
+        },
+        {
+          "line": 5358,
+          "declaration": "public boolean u2(@androidx.annotation.NonNull com.alibaba.dingtalk.dingerimpl.db.DingerEntryObject r6) {"
+        },
+        {
+          "line": 5408,
+          "declaration": "public final void u3(JSONObject jSONObject, oco ocoVar, String str, String str2) throws NumberFormatException {"
+        },
+        {
+          "line": 5431,
+          "declaration": "public void v1(List<H5DataInfo> list, List<H5DataInfo> list2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5450,
+          "declaration": "public boolean v2() {"
+        },
+        {
+          "line": 5454,
+          "declaration": "public final void v3(String str) {"
+        },
+        {
+          "line": 5463,
+          "declaration": "public void v4(List<H5DataInfo> list, List<H5DataInfo> list2, long j2, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 5486,
+          "declaration": "public final void w1(String str) {"
+        },
+        {
+          "line": 5495,
+          "declaration": "public final boolean w2() {"
+        },
+        {
+          "line": 5504,
+          "declaration": "public void w3(int i2, IObserver<Integer> iObserver) {"
+        },
+        {
+          "line": 5510,
+          "declaration": "public final void w4(JSONArray jSONArray, int i2, long j2) throws JSONException {"
+        },
+        {
+          "line": 5535,
+          "declaration": "public void x1(BleConnectInfo bleConnectInfo, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 5576,
+          "declaration": "public final void x2(JSONObject jSONObject) throws JSONException {"
+        },
+        {
+          "line": 5604,
+          "declaration": "public void x3(DingerInterface.PushHandler pushHandler) {"
+        },
+        {
+          "line": 5611,
+          "declaration": "public final void x4(JSONObject jSONObject) throws JSONException {"
+        },
+        {
+          "line": 5628,
+          "declaration": "public final String y1() throws IOException {"
+        },
+        {
+          "line": 5668,
+          "declaration": "public final void y3() {"
+        },
+        {
+          "line": 5685,
+          "declaration": "public void z1(DingerEntryObject dingerEntryObject, boolean z2) {"
+        },
+        {
+          "line": 5690,
+          "declaration": "public void z3(DingerCallback<ms8> dingerCallback) {"
+        }
+      ]
+    },
+    "defpackage/hsp.java": {
+      "sha256": "e270e0eded4880805a3bc5e91b78523a109df6198e77d624f54d9eefeb5c931e",
+      "lines": 187,
+      "method_lines": [
+        {
+          "line": 133,
+          "declaration": "public hsp() {"
+        },
+        {
+          "line": 137,
+          "declaration": "public void g() {"
+        },
+        {
+          "line": 145,
+          "declaration": "public final void h() {"
+        },
+        {
+          "line": 158,
+          "declaration": "public final void i(long j, @NonNull Callback<Void> callback) {"
+        },
+        {
+          "line": 163,
+          "declaration": "public final boolean j() {"
+        },
+        {
+          "line": 183,
+          "declaration": "public final void k(@NonNull ScheduleObject scheduleObject, @NonNull Callback<Void> callback) throws JSONException {"
+        }
+      ]
+    },
+    "defpackage/ga8.java": {
+      "sha256": "e5c84c00ab94d03cf352459b7a4d207e9d3dc794f6d8b95bd232f89b7fc17a1b",
+      "lines": 692,
+      "method_lines": [
+        {
+          "line": 391,
+          "declaration": "public static void a(DingerEntryObject dingerEntryObject, Map<String, String> map, Callback<GenMinutesRspObject> callback) {"
+        },
+        {
+          "line": 431,
+          "declaration": "public static void b(long j2, int i2, Map<String, String> map, Callback<RecordTaskDTO> callback) {"
+        },
+        {
+          "line": 458,
+          "declaration": "public static void c(List<String> list, Map<String, Long> map, Callback<SyncFileTaskDTO> callback) {"
+        },
+        {
+          "line": 476,
+          "declaration": "public static void d(String str, long j2, String str2, Callback<String> callback) {"
+        },
+        {
+          "line": 514,
+          "declaration": "public static void e(long j2, boolean z, String str, Callback<UpgradeVersionTaskDTO> callback) {"
+        },
+        {
+          "line": 531,
+          "declaration": "public static void f(DingerEntryObject dingerEntryObject, Callback<CreateUploadFileTaskResultModel> callback) {"
+        },
+        {
+          "line": 554,
+          "declaration": "public static void g(String str, int i2, Map<String, String> map, Callback<UpdateDeviceTaskResultModel> callback) {"
+        },
+        {
+          "line": 579,
+          "declaration": "public static void h(String str, int i2, Map<String, String> map, Callback<UpdateRecordTaskResultModel> callback) {"
+        },
+        {
+          "line": 583,
+          "declaration": "public static void i(String str, int i2, Map<String, String> map, Callback<UpdateRecordTaskResultModel> callback, boolean z) {"
+        },
+        {
+          "line": 611,
+          "declaration": "public static void k(long j2, Callback<QueryOngoingScheduleDeviceTaskResultModel> callback) {"
+        },
+        {
+          "line": 627,
+          "declaration": "public static void l(Callback<RecordTaskDTO> callback) {"
+        },
+        {
+          "line": 642,
+          "declaration": "public static void m(QueryRecordTaskRequestModel queryRecordTaskRequestModel, Callback<RecordTaskDTO> callback) {"
+        },
+        {
+          "line": 652,
+          "declaration": "public static void n(long j2, int i2, String str, Map<String, String> map, Callback<SendDeviceTaskCommandResultModel> callback) {"
+        },
+        {
+          "line": 683,
+          "declaration": "public static void o(UpdateRecordTaskRequestModel updateRecordTaskRequestModel, Callback<UpdateRecordTaskResultModel> callback) {"
+        }
+      ]
+    },
+    "defpackage/s98.java": {
+      "sha256": "7a899db92fc0c18aaa43ca6e0b8124a5339c4e20fb1ff5e2b7ff8637d3d1a877",
+      "lines": 225,
+      "method_lines": [
+        {
+          "line": 152,
+          "declaration": "public static void a(long j, String str, int i, Callback<List<SettingDTO>> callback) {"
+        },
+        {
+          "line": 170,
+          "declaration": "public static void b(long j, List<String> list, Callback<List<SettingDTO>> callback) {"
+        },
+        {
+          "line": 186,
+          "declaration": "public static void c(long j, String str, String str2, Callback<UpdateDeviceSettingResultModel> callback) {"
+        },
+        {
+          "line": 204,
+          "declaration": "public static void e(long j, Callback<List<SettingDTO>> callback) {"
+        }
+      ]
+    },
+    "defpackage/q98.java": {
+      "sha256": "6f01b0ed8a6fb50e7df97ca2950de2c9feedbcd948e232b675d5929b34319582",
+      "lines": 554,
+      "method_lines": [
+        {
+          "line": 134,
+          "declaration": "public static q98 m() {"
+        },
+        {
+          "line": 138,
+          "declaration": "public void b(long j, Callback<Boolean> callback) {"
+        },
+        {
+          "line": 165,
+          "declaration": "public boolean c(long j, long j2) {"
+        },
+        {
+          "line": 182,
+          "declaration": "public final boolean d(long j, long j2, Map<String, String> map) {"
+        },
+        {
+          "line": 205,
+          "declaration": "public final Map<String, String> e(long j, List<String> list) {"
+        },
+        {
+          "line": 220,
+          "declaration": "public Map<String, String> f(long j) {"
+        },
+        {
+          "line": 265,
+          "declaration": "public int g(long j) {"
+        },
+        {
+          "line": 307,
+          "declaration": "public d h(long j) {"
+        },
+        {
+          "line": 317,
+          "declaration": "public final Map<String, String> i(long j) {"
+        },
+        {
+          "line": 326,
+          "declaration": "public Boolean j(long j) {"
+        },
+        {
+          "line": 349,
+          "declaration": "public Boolean k(long j) {"
+        },
+        {
+          "line": 372,
+          "declaration": "public Boolean l(long j) {"
+        },
+        {
+          "line": 395,
+          "declaration": "public String n(long j) {"
+        },
+        {
+          "line": 418,
+          "declaration": "public boolean o(long j) {"
+        },
+        {
+          "line": 441,
+          "declaration": "public boolean p(long j) {"
+        },
+        {
+          "line": 464,
+          "declaration": "public boolean q(long j) {"
+        },
+        {
+          "line": 487,
+          "declaration": "public void r(long j) {"
+        },
+        {
+          "line": 499,
+          "declaration": "public void s(long j, List<SettingDTO> list) {"
+        },
+        {
+          "line": 529,
+          "declaration": "public void t(long j, String str, String str2) {"
+        }
+      ]
+    },
+    "defpackage/o98.java": {
+      "sha256": "e30e5f5091344b078620c6b6851a33e2b8166e4d06386922dfd839ca8c45114c",
+      "lines": 224,
+      "method_lines": [
+        {
+          "line": 137,
+          "declaration": "public static void a(Callback<QueryUserBindDevicesResultModel> callback) {"
+        },
+        {
+          "line": 149,
+          "declaration": "public static void b(long j, String str, Callback<FirmwareUpgradeVersionModel> callback) {"
+        },
+        {
+          "line": 169,
+          "declaration": "public static void c(long j, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 197,
+          "declaration": "public static void d(long j, Map<String, String> map, Callback<UpdateDevicePropertiesResultModel> callback) {"
+        }
+      ]
+    },
+    "defpackage/j78.java": {
+      "sha256": "0ad13f95630773f558ed69b30a7386f0abc32c1f48eb54b98eff50940cf40c77",
+      "lines": 252,
+      "method_lines": [
+        {
+          "line": 102,
+          "declaration": "public static UpdateDeviceConnectionRequestModel a(UpdateDeviceConnectionRequestModel updateDeviceConnectionRequestModel) {"
+        },
+        {
+          "line": 116,
+          "declaration": "public static boolean b(UpdateDeviceConnectionRequestModel updateDeviceConnectionRequestModel, UpdateDeviceConnectionRequestModel updateDeviceConnectionRequestModel2) {"
+        },
+        {
+          "line": 123,
+          "declaration": "public static void c(QueryDeviceConnectionListRequestModel queryDeviceConnectionListRequestModel, Callback<List<DeviceConnectionDTO>> callback) {"
+        },
+        {
+          "line": 127,
+          "declaration": "public static void d(long j, String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 150,
+          "declaration": "public static void e(UpdateDeviceConnectionRequestModel updateDeviceConnectionRequestModel, Callback<JSONObject> callback, boolean z) {"
+        },
+        {
+          "line": 170,
+          "declaration": "public static void f(long j, String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 187,
+          "declaration": "public static void g(long j, String str, anj anjVar, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 213,
+          "declaration": "public static void h(long j, String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 232,
+          "declaration": "public static void i(long j, String str, Callback<JSONObject> callback) {"
+        }
+      ]
+    },
+    "defpackage/x78.java": {
+      "sha256": "af3b560621a9df3cd572df988fe4e0fdf47554decb51a414013859d625612f98",
+      "lines": 377,
+      "method_lines": [
+        {
+          "line": 44,
+          "declaration": "public static boolean A(long j) {"
+        },
+        {
+          "line": 51,
+          "declaration": "public static boolean B(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 59,
+          "declaration": "public static boolean D(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 64,
+          "declaration": "public static boolean G(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 69,
+          "declaration": "public static int j(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 81,
+          "declaration": "public static x78 t() {"
+        },
+        {
+          "line": 85,
+          "declaration": "public static long x(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 92,
+          "declaration": "public static boolean z(int i2) {"
+        },
+        {
+          "line": 96,
+          "declaration": "public boolean C() {"
+        },
+        {
+          "line": 100,
+          "declaration": "public boolean E() {"
+        },
+        {
+          "line": 104,
+          "declaration": "public boolean F(long j) {"
+        },
+        {
+          "line": 108,
+          "declaration": "public void H() {"
+        },
+        {
+          "line": 116,
+          "declaration": "public synchronized void I(long j) {"
+        },
+        {
+          "line": 137,
+          "declaration": "public void J(LocationDTO locationDTO) {"
+        },
+        {
+          "line": 141,
+          "declaration": "public void K(String str, String str2) {"
+        },
+        {
+          "line": 149,
+          "declaration": "public void L(String str) {"
+        },
+        {
+          "line": 153,
+          "declaration": "public void M(String str, String str2) {"
+        },
+        {
+          "line": 161,
+          "declaration": "public synchronized void N(List<DeviceModel> list, String str) {"
+        },
+        {
+          "line": 171,
+          "declaration": "public void O(long j, String str) {"
+        },
+        {
+          "line": 175,
+          "declaration": "public void a(long j) {"
+        },
+        {
+          "line": 190,
+          "declaration": "public String b(long j) {"
+        },
+        {
+          "line": 199,
+          "declaration": "public String c(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 203,
+          "declaration": "public int d(long j) {"
+        },
+        {
+          "line": 213,
+          "declaration": "public int e(int i2) {"
+        },
+        {
+          "line": 217,
+          "declaration": "public String f(long j) {"
+        },
+        {
+          "line": 226,
+          "declaration": "public synchronized long g() {"
+        },
+        {
+          "line": 245,
+          "declaration": "public DeviceModel h() {"
+        },
+        {
+          "line": 249,
+          "declaration": "public int i(long j) {"
+        },
+        {
+          "line": 258,
+          "declaration": "public String k() {"
+        },
+        {
+          "line": 262,
+          "declaration": "public String l(String str) {"
+        },
+        {
+          "line": 266,
+          "declaration": "public List<DeviceModel> m() {"
+        },
+        {
+          "line": 281,
+          "declaration": "public DeviceModel n(long j) {"
+        },
+        {
+          "line": 302,
+          "declaration": "public String o(List<DevicePropertyModel> list, String str) {"
+        },
+        {
+          "line": 313,
+          "declaration": "public String p(long j) {"
+        },
+        {
+          "line": 323,
+          "declaration": "public String q(long j) {"
+        },
+        {
+          "line": 332,
+          "declaration": "public String r(long j) {"
+        },
+        {
+          "line": 337,
+          "declaration": "public String s(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 341,
+          "declaration": "public int u() {"
+        },
+        {
+          "line": 361,
+          "declaration": "public LocationDTO v() {"
+        },
+        {
+          "line": 365,
+          "declaration": "public String w(long j) {"
+        },
+        {
+          "line": 369,
+          "declaration": "public String y(long j) {"
+        }
+      ]
+    },
+    "defpackage/fs8.java": {
+      "sha256": "af84773ec1699fce2fc9eefa6c03ea2c8da53c9434fe7d344a34beef51a4a596",
+      "lines": 290,
+      "method_lines": [
+        {
+          "line": 282,
+          "declaration": "public static final void a(@NotNull List<? extends H5DataInfo> list, int i, @Nullable Callback<List<FileDTO>> callback) {"
+        },
+        {
+          "line": 287,
+          "declaration": "public static final void b(@NotNull List<? extends H5DataInfo> list, @Nullable Callback<List<FileDTO>> callback) {"
+        }
+      ]
+    },
+    "defpackage/hr8.java": {
+      "sha256": "16ca1a4f0569ed6f174b519713656018c2eb64550ece09be5917ed22cb677775",
+      "lines": 1627,
+      "method_lines": [
+        {
+          "line": 907,
+          "declaration": "public static hr8 B() {"
+        },
+        {
+          "line": 911,
+          "declaration": "public static /* synthetic */ void J(Object obj, DingerEntryObject[] dingerEntryObjectArr, boolean[] zArr, DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 924,
+          "declaration": "public static /* synthetic */ void K(Object obj, Integer[] numArr, boolean[] zArr, DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 937,
+          "declaration": "public static /* synthetic */ void L(Object obj, String[] strArr, boolean[] zArr, DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 953,
+          "declaration": "public /* synthetic */ void M(Object obj, boolean[] zArr, boolean[] zArr2, DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 965,
+          "declaration": "public static /* synthetic */ void N(Object obj, boolean[] zArr, boolean[] zArr2, DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 978,
+          "declaration": "public static /* synthetic */ void O(Object obj, boolean[] zArr, boolean[] zArr2, DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 991,
+          "declaration": "public static String u(long j2, long j3) {"
+        },
+        {
+          "line": 995,
+          "declaration": "public String A(long j2, long j3) {"
+        },
+        {
+          "line": 1031,
+          "declaration": "public String C() {"
+        },
+        {
+          "line": 1035,
+          "declaration": "public String D() {"
+        },
+        {
+          "line": 1044,
+          "declaration": "public void E(DingerEntryObject dingerEntryObject, Callback<Integer> callback) {"
+        },
+        {
+          "line": 1053,
+          "declaration": "public boolean F(long j2) {"
+        },
+        {
+          "line": 1085,
+          "declaration": "public boolean G(long j2) {"
+        },
+        {
+          "line": 1117,
+          "declaration": "public final boolean H(DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 1138,
+          "declaration": "public boolean I(long j2) {"
+        },
+        {
+          "line": 1170,
+          "declaration": "public void P(long j2, long j3, int i2, boolean z, long j4, boolean z2, boolean z3, boolean z4, boolean z5, DingerCallback<List<DingerEntryObject>> dingerCallback, DingerCallback<Integer> dingerCallback2) {"
+        },
+        {
+          "line": 1180,
+          "declaration": "public void Q(long j2, long j3, DingerCallback<DingerEntryObject> dingerCallback) {"
+        },
+        {
+          "line": 1189,
+          "declaration": "public void R(String str, DingerCallback<DingerEntryObject> dingerCallback) {"
+        },
+        {
+          "line": 1198,
+          "declaration": "public void S(String str, DingerCallback<DingerEntryObject> dingerCallback) {"
+        },
+        {
+          "line": 1207,
+          "declaration": "public void T(String str, DingerCallback<Integer> dingerCallback) {"
+        },
+        {
+          "line": 1216,
+          "declaration": "public void U(List<String> list, Callback<List<DingerEntryObject>> callback) {"
+        },
+        {
+          "line": 1236,
+          "declaration": "public void V(List<String> list, Callback<List<DingerEntryObject>> callback) {"
+        },
+        {
+          "line": 1256,
+          "declaration": "public void W(long j2, DingerCallback<List<DingerEntryObject>> dingerCallback) {"
+        },
+        {
+          "line": 1270,
+          "declaration": "public void X(long j2, DingerCallback<List<DingerEntryObject>> dingerCallback) {"
+        },
+        {
+          "line": 1284,
+          "declaration": "public int Y(long j2, long j3, DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 1288,
+          "declaration": "public synchronized int Z(long j2, long j3, DingerEntryObject dingerEntryObject, Callback<Integer> callback) {"
+        },
+        {
+          "line": 1313,
+          "declaration": "public void a0(String str, String str2) {"
+        },
+        {
+          "line": 1327,
+          "declaration": "public void b0(long j2) {"
+        },
+        {
+          "line": 1345,
+          "declaration": "public final android.content.ContentValues o(com.alibaba.dingtalk.dingerimpl.db.DingerEntryObject r28, boolean r29) {"
+        },
+        {
+          "line": 1353,
+          "declaration": "public void p(DingerEntryObject dingerEntryObject, @Nullable Callback<Integer> callback) {"
+        },
+        {
+          "line": 1370,
+          "declaration": "public void q(long j2, long j3) {"
+        },
+        {
+          "line": 1383,
+          "declaration": "public void r(long j2) {"
+        },
+        {
+          "line": 1397,
+          "declaration": "public void s(@NonNull DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 1406,
+          "declaration": "public void t(long j2, long j3) {"
+        },
+        {
+          "line": 1419,
+          "declaration": "public final DingerEntryObject v(Cursor cursor) {"
+        },
+        {
+          "line": 1468,
+          "declaration": "public DingerEntryObject w(FileDTO fileDTO) {"
+        },
+        {
+          "line": 1528,
+          "declaration": "public DingerEntryObject x(long j2, long j3) {"
+        },
+        {
+          "line": 1577,
+          "declaration": "public int y(long j2) {"
+        },
+        {
+          "line": 1610,
+          "declaration": "public final DingerEntryObject z(Cursor cursor) {"
+        }
+      ]
+    },
+    "com/alibaba/dingtalk/dingerimpl/DingerInterfaceImpl.java": {
+      "sha256": "5de76a76de454da26e995beccd39a56113b006aeec7df0a196b6192aa42e3bc2",
+      "lines": 6564,
+      "method_lines": [
+        {
+          "line": 2905,
+          "declaration": "public /* synthetic */ void P1(JSONObject jSONObject, String str, Callback callback, int i2, Integer num) throws JSONException {"
+        },
+        {
+          "line": 2922,
+          "declaration": "public /* synthetic */ Object Q1(Object obj, Method method, Object[] objArr) throws Throwable {"
+        },
+        {
+          "line": 2981,
+          "declaration": "public /* synthetic */ void R1() {"
+        },
+        {
+          "line": 2989,
+          "declaration": "public /* synthetic */ void T1(Callback callback, DingerEntryObject dingerEntryObject) throws JSONException {"
+        },
+        {
+          "line": 3018,
+          "declaration": "public void A(@NonNull JSONObject jSONObject, @NonNull ApiEventListener<JSONObject> apiEventListener) {"
+        },
+        {
+          "line": 3051,
+          "declaration": "public void A0(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3074,
+          "declaration": "public final long A1(@NonNull String str, @NonNull DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 3087,
+          "declaration": "public ms8 B() {"
+        },
+        {
+          "line": 3092,
+          "declaration": "public void B0(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 3136,
+          "declaration": "public final JSONObject B1() {"
+        },
+        {
+          "line": 3159,
+          "declaration": "public void C(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3177,
+          "declaration": "public void C0(Callback<JSONObject> callback) throws NumberFormatException {"
+        },
+        {
+          "line": 3182,
+          "declaration": "public final long C1(List<DeviceModel> list) {"
+        },
+        {
+          "line": 3204,
+          "declaration": "public void D(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 3249,
+          "declaration": "public final void S1(@NonNull AudioExtra audioExtra, @NonNull Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3276,
+          "declaration": "public void E(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3320,
+          "declaration": "public final void E1(org.json.JSONObject r22, com.alibaba.android.dingtalk.common.Callback<org.json.JSONObject> r23) throws org.json.JSONException {"
+        },
+        {
+          "line": 3329,
+          "declaration": "public void F(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3357,
+          "declaration": "public final void F1(String str, String str2, Callback<JSONObject> callback) throws JSONException, NumberFormatException {"
+        },
+        {
+          "line": 3435,
+          "declaration": "public final void G1(String str, String str2, String str3, Callback<JSONObject> callback) throws JSONException, NumberFormatException {"
+        },
+        {
+          "line": 3648,
+          "declaration": "public JSONObject H() {"
+        },
+        {
+          "line": 3661,
+          "declaration": "public final void H1(long j2, int i2, int i3, String str, int i4, boolean z2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3667,
+          "declaration": "public void I(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 3693,
+          "declaration": "public final boolean I1() {"
+        },
+        {
+          "line": 3708,
+          "declaration": "public void J(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 3877,
+          "declaration": "public final boolean J1() {"
+        },
+        {
+          "line": 3882,
+          "declaration": "public boolean K() {"
+        },
+        {
+          "line": 3886,
+          "declaration": "public final boolean K1(String str) {"
+        },
+        {
+          "line": 3891,
+          "declaration": "public boolean L() {"
+        },
+        {
+          "line": 3895,
+          "declaration": "public final boolean L1() {"
+        },
+        {
+          "line": 3901,
+          "declaration": "public void M(@NonNull JSONObject jSONObject, @NonNull final Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 3944,
+          "declaration": "public final boolean M1() {"
+        },
+        {
+          "line": 3949,
+          "declaration": "public void N() {"
+        },
+        {
+          "line": 3958,
+          "declaration": "public final boolean N1() {"
+        },
+        {
+          "line": 3967,
+          "declaration": "public void O(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 4016,
+          "declaration": "public final boolean O1(String str, String str2) {"
+        },
+        {
+          "line": 4045,
+          "declaration": "public void P(int i2) throws JSONException {"
+        },
+        {
+          "line": 4055,
+          "declaration": "public void Q(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4075,
+          "declaration": "public long R(@NonNull String str, int i2) {"
+        },
+        {
+          "line": 4082,
+          "declaration": "public void S(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4110,
+          "declaration": "public void T(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4127,
+          "declaration": "public void U(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4202,
+          "declaration": "public final void U1(JSONObject jSONObject, DingerCallback<DingerEntryObject> dingerCallback, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4232,
+          "declaration": "public void V(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4266,
+          "declaration": "public final void V1(anj anjVar) {"
+        },
+        {
+          "line": 4288,
+          "declaration": "public void W(org.json.JSONObject r14, com.alibaba.android.dingtalk.common.Callback<org.json.JSONObject> r15) {"
+        },
+        {
+          "line": 4296,
+          "declaration": "public final void W1(Callback<JSONObject> callback, boolean z2) {"
+        },
+        {
+          "line": 4304,
+          "declaration": "public void X(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4319,
+          "declaration": "public final void X1() {"
+        },
+        {
+          "line": 4327,
+          "declaration": "public void Y(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 4378,
+          "declaration": "public final void Y1() {"
+        },
+        {
+          "line": 4391,
+          "declaration": "public void Z(JSONObject jSONObject, final Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4409,
+          "declaration": "public final void Z1() {"
+        },
+        {
+          "line": 4432,
+          "declaration": "public void a(@NonNull JSONObject jSONObject, @Nullable Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4437,
+          "declaration": "public void a0(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4442,
+          "declaration": "public final void a2() {"
+        },
+        {
+          "line": 4451,
+          "declaration": "public void b(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 4468,
+          "declaration": "public void b0(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 4509,
+          "declaration": "public final void b2() {"
+        },
+        {
+          "line": 4518,
+          "declaration": "public void c(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 4578,
+          "declaration": "public void c0(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4632,
+          "declaration": "public final String c2() {"
+        },
+        {
+          "line": 4648,
+          "declaration": "public void d(org.json.JSONObject r9, com.alibaba.android.dingtalk.common.Callback<org.json.JSONObject> r10) throws org.json.JSONException {"
+        },
+        {
+          "line": 4738,
+          "declaration": "public void d0(DingerInterface.PushHandler pushHandler) {"
+        },
+        {
+          "line": 4742,
+          "declaration": "public final void d2(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 4759,
+          "declaration": "public void e(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 4793,
+          "declaration": "public void e0(DingerCallback<ms8> dingerCallback) {"
+        },
+        {
+          "line": 4797,
+          "declaration": "public final void e2(DeviceModel deviceModel) {"
+        },
+        {
+          "line": 4827,
+          "declaration": "public void f(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 4867,
+          "declaration": "public void f0(IDingerEventObserver iDingerEventObserver) {"
+        },
+        {
+          "line": 4871,
+          "declaration": "public final void f1(List<DeviceModel> list, Callback<JSONObject> callback, boolean z2) throws JSONException {"
+        },
+        {
+          "line": 4914,
+          "declaration": "public final void f2(long j2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 4949,
+          "declaration": "public int g(long j2) {"
+        },
+        {
+          "line": 4955,
+          "declaration": "public void g0(IDingerStreamDataObserver iDingerStreamDataObserver) {"
+        },
+        {
+          "line": 4959,
+          "declaration": "public final JSONObject g1() throws JSONException {"
+        },
+        {
+          "line": 4969,
+          "declaration": "public final void g2(String str, JSONArray jSONArray, Callback<JSONObject> callback) throws JSONException, NumberFormatException {"
+        },
+        {
+          "line": 5022,
+          "declaration": "public void h(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5082,
+          "declaration": "public void h0(@NonNull JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5117,
+          "declaration": "public final void h1(final String str, String str2, final int i2, final JSONObject jSONObject, final Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5126,
+          "declaration": "public final void h2() {"
+        },
+        {
+          "line": 5140,
+          "declaration": "public void i(Activity activity, String str) {"
+        },
+        {
+          "line": 5150,
+          "declaration": "public void i0(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5183,
+          "declaration": "public JSONObject i1(DingerDeviceStatus dingerDeviceStatus) {"
+        },
+        {
+          "line": 5200,
+          "declaration": "public final void i2(long j2, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5215,
+          "declaration": "public void init() {"
+        },
+        {
+          "line": 5236,
+          "declaration": "public void j() {"
+        },
+        {
+          "line": 5255,
+          "declaration": "public void j0(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 5297,
+          "declaration": "public final void j1(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5302,
+          "declaration": "public final String j2(Integer num) {"
+        },
+        {
+          "line": 5307,
+          "declaration": "public void k(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException, NumberFormatException {"
+        },
+        {
+          "line": 5381,
+          "declaration": "public void k0() {"
+        },
+        {
+          "line": 5386,
+          "declaration": "public final void k1(Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5391,
+          "declaration": "public final Integer k2(String str) {"
+        },
+        {
+          "line": 5401,
+          "declaration": "public boolean l() {"
+        },
+        {
+          "line": 5406,
+          "declaration": "public int l0(long j2, @NonNull byte[] bArr, int i2, int i3) {"
+        },
+        {
+          "line": 5411,
+          "declaration": "public void l1(@Nullable Callback<Void> callback) {"
+        },
+        {
+          "line": 5433,
+          "declaration": "public final void l2() {"
+        },
+        {
+          "line": 5441,
+          "declaration": "public boolean m() {"
+        },
+        {
+          "line": 5446,
+          "declaration": "public void m0(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5465,
+          "declaration": "public final boolean m1(String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5482,
+          "declaration": "public final void m2(@NonNull JSONObject jSONObject) throws JSONException {"
+        },
+        {
+          "line": 5500,
+          "declaration": "public boolean n() {"
+        },
+        {
+          "line": 5505,
+          "declaration": "public void n0(String str) {"
+        },
+        {
+          "line": 5530,
+          "declaration": "public final boolean n1(String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5541,
+          "declaration": "public final void n2(JSONObject jSONObject) throws JSONException {"
+        },
+        {
+          "line": 5552,
+          "declaration": "public boolean o() {"
+        },
+        {
+          "line": 5557,
+          "declaration": "public void o0(String str) throws NumberFormatException {"
+        },
+        {
+          "line": 5565,
+          "declaration": "public final boolean o1(String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5576,
+          "declaration": "public final void o2(JSONObject jSONObject) throws JSONException {"
+        },
+        {
+          "line": 5585,
+          "declaration": "public void onUserLogout() {"
+        },
+        {
+          "line": 5596,
+          "declaration": "public boolean p() {"
+        },
+        {
+          "line": 5637,
+          "declaration": "public void p0(int i2) {"
+        },
+        {
+          "line": 5642,
+          "declaration": "public final boolean p1() {"
+        },
+        {
+          "line": 5654,
+          "declaration": "public void q(Bundle bundle, ApiEventListener<String> apiEventListener) {"
+        },
+        {
+          "line": 5670,
+          "declaration": "public void q0(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException, NumberFormatException {"
+        },
+        {
+          "line": 5715,
+          "declaration": "public final boolean q1(String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5729,
+          "declaration": "public void r(@NonNull JSONObject jSONObject, ApiEventListener<String> apiEventListener) {"
+        },
+        {
+          "line": 5739,
+          "declaration": "public void r0() throws IllegalStateException, InterruptedException {"
+        },
+        {
+          "line": 5743,
+          "declaration": "public final boolean r1(String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5755,
+          "declaration": "public void s(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 5845,
+          "declaration": "public void s0() throws JSONException {"
+        },
+        {
+          "line": 5861,
+          "declaration": "public final boolean s1(String str, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 5878,
+          "declaration": "public void t(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException, NumberFormatException {"
+        },
+        {
+          "line": 5953,
+          "declaration": "public void t0() {"
+        },
+        {
+          "line": 5958,
+          "declaration": "public final boolean t1(Context context, String str) {"
+        },
+        {
+          "line": 5963,
+          "declaration": "public void u(Bundle bundle, ApiEventListener<Long> apiEventListener) {"
+        },
+        {
+          "line": 5986,
+          "declaration": "public JSONObject u0(@NonNull JSONObject jSONObject) {"
+        },
+        {
+          "line": 5990,
+          "declaration": "public final void u1(long j2, String str) {"
+        },
+        {
+          "line": 5997,
+          "declaration": "public void v(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 6026,
+          "declaration": "public void v0(DingerInterface.PushHandler pushHandler) {"
+        },
+        {
+          "line": 6032,
+          "declaration": "public H5DataInfo v1(@NonNull DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 6114,
+          "declaration": "public JSONObject w() {"
+        },
+        {
+          "line": 6148,
+          "declaration": "public void w0(DingerCallback<ms8> dingerCallback) {"
+        },
+        {
+          "line": 6158,
+          "declaration": "public final void w1(java.lang.String r17, org.json.JSONArray r18, com.alibaba.android.dingtalk.common.Callback<org.json.JSONObject> r19) throws org.json.JSONException {"
+        },
+        {
+          "line": 6273,
+          "declaration": "public void x(@NonNull JSONObject jSONObject, @NonNull Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 6292,
+          "declaration": "public void x0(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 6324,
+          "declaration": "public final String x1(String str) {"
+        },
+        {
+          "line": 6339,
+          "declaration": "public void y(JSONObject jSONObject, Callback<JSONObject> callback) {"
+        },
+        {
+          "line": 6363,
+          "declaration": "public void y0(IDingerEventObserver iDingerEventObserver) {"
+        },
+        {
+          "line": 6367,
+          "declaration": "public void y1() throws IllegalAccessException, SecurityException, IllegalArgumentException, InvocationTargetException {"
+        },
+        {
+          "line": 6441,
+          "declaration": "public void z(JSONObject jSONObject, Callback<JSONObject> callback) throws JSONException {"
+        },
+        {
+          "line": 6534,
+          "declaration": "public void z0(IDingerStreamDataObserver iDingerStreamDataObserver) {"
+        },
+        {
+          "line": 6538,
+          "declaration": "public final int z1() {"
+        },
+        {
+          "line": 6542,
+          "declaration": "public void init(Application application) {"
+        }
+      ]
+    },
+    "com/alibaba/dingtalk/dingerimpl/wifi/DingerDownloader.java": {
+      "sha256": "8ebf939e36bfbbbe45ab13e7d742b14e965a6523d846493d6a31bb0721a66550",
+      "lines": 419,
+      "method_lines": [
+        {
+          "line": 324,
+          "declaration": "public DingerDownloader() {"
+        },
+        {
+          "line": 329,
+          "declaration": "public static /* synthetic */ int c(DingerDownloader dingerDownloader) {"
+        },
+        {
+          "line": 335,
+          "declaration": "public void i() {"
+        },
+        {
+          "line": 344,
+          "declaration": "public void j() {"
+        },
+        {
+          "line": 351,
+          "declaration": "public final void k(DingerCallback<OggData> dingerCallback) {"
+        },
+        {
+          "line": 355,
+          "declaration": "public void l(@NonNull DownloadData downloadData, @NonNull WifiDownloadListener wifiDownloadListener) {"
+        },
+        {
+          "line": 368,
+          "declaration": "public void onDingerEvent(int i, String str) {"
+        }
+      ]
+    },
+    "com/alibaba/dingtalk/dingerimpl/wifi/WifiTransferDialog.java": {
+      "sha256": "a446940c815d996db2346aac1a7014eaa6e76756a6c90038c2dfc13444044611",
+      "lines": 557,
+      "method_lines": [
+        {
+          "line": 206,
+          "declaration": "public WifiTransferDialog(@NotNull Activity activity, @NotNull List<FidData> list) {"
+        },
+        {
+          "line": 240,
+          "declaration": "public static final void r(WifiTransferDialog wifiTransferDialog, View view) {"
+        },
+        {
+          "line": 246,
+          "declaration": "public static final void z(WifiTransferDialog wifiTransferDialog) throws NoWhenBranchMatchedException {"
+        },
+        {
+          "line": 251,
+          "declaration": "public final void A(String str, String str2) {"
+        },
+        {
+          "line": 265,
+          "declaration": "public final void B(String str) {"
+        },
+        {
+          "line": 269,
+          "declaration": "public final void C() {"
+        },
+        {
+          "line": 281,
+          "declaration": "public final void D(WifiError wifiError) {"
+        },
+        {
+          "line": 294,
+          "declaration": "public final void E() {"
+        },
+        {
+          "line": 298,
+          "declaration": "public final void F() {"
+        },
+        {
+          "line": 310,
+          "declaration": "public final void G() {"
+        },
+        {
+          "line": 330,
+          "declaration": "public final void H(OnTransferProgressListener onTransferProgressListener) {"
+        },
+        {
+          "line": 334,
+          "declaration": "public final void I(@Nullable OnWifiTransferListener onWifiTransferListener) {"
+        },
+        {
+          "line": 338,
+          "declaration": "public final void J(final LinkedList<DownloadData> linkedList) throws NoWhenBranchMatchedException {"
+        },
+        {
+          "line": 396,
+          "declaration": "public void onCreate(@Nullable Bundle bundle) throws NoWhenBranchMatchedException {"
+        },
+        {
+          "line": 405,
+          "declaration": "public final void p() {"
+        },
+        {
+          "line": 412,
+          "declaration": "public final void q(ContentType contentType) throws NoWhenBranchMatchedException {"
+        },
+        {
+          "line": 487,
+          "declaration": "public final void s() {"
+        },
+        {
+          "line": 491,
+          "declaration": "public final FrameLayout t() {"
+        },
+        {
+          "line": 495,
+          "declaration": "public final DingerDownloader u() {"
+        },
+        {
+          "line": 499,
+          "declaration": "public final void v() throws NoWhenBranchMatchedException {"
+        },
+        {
+          "line": 526,
+          "declaration": "public final void w() throws NoWhenBranchMatchedException {"
+        },
+        {
+          "line": 531,
+          "declaration": "public final void x() {"
+        },
+        {
+          "line": 540,
+          "declaration": "public final void y() {"
+        }
+      ]
+    },
+    "com/alibaba/dingtalk/dingerimpl/db/DingerEntryObject.java": {
+      "sha256": "3efaa28bc626f2fc54806a592f3dde8370d37a50ed15e6de0ee6f0747f9e877d",
+      "lines": 194,
+      "method_lines": [
+        {
+          "line": 71,
+          "declaration": "public DingerEntryObject() {"
+        },
+        {
+          "line": 96,
+          "declaration": "public int describeContents() {"
+        },
+        {
+          "line": 101,
+          "declaration": "public void writeToParcel(@NonNull Parcel parcel, int i) {"
+        },
+        {
+          "line": 136,
+          "declaration": "public int compareTo(DingerEntryObject dingerEntryObject) {"
+        },
+        {
+          "line": 140,
+          "declaration": "public DingerEntryObject(Parcel parcel) {"
+        }
+      ]
+    },
+    "com/alibaba/dingtalk/dingerimpl/data/DingerDeviceStatus.java": {
+      "sha256": "50fd9f2bad082a3dc14022195d1437190615c15ae695a25fde706f779c9e434e",
+      "lines": 30,
+      "method_lines": []
+    },
+    "com/alibaba/dingtalk/dingerimpl/schedule/data/ScheduleObject.java": {
+      "sha256": "cdafc0b8057340afec5dab616ea89a57d533502f3e39bb219ab3219803f9ac57",
+      "lines": 10,
+      "method_lines": []
+    },
+    "com/alibaba/dingtalk/dingerimpl/schedule/data/ScheduleItemObject.java": {
+      "sha256": "e09ccd217a9274d657d1c0acbb59261312d779bd921c3c4cc7dae9eae24fa8e2",
+      "lines": 16,
+      "method_lines": [
+        {
+          "line": 11,
+          "declaration": "public ScheduleItemObject(int i, long j, long j2) {"
+        }
+      ]
+    }
+  },
+  "native_symbols": [
+    {
+      "name": "_ZN6dinger17DingerProtocolAna18SendRawFileSyncCmdERKNSt6__ndk112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEi",
+      "va": "0x233350",
+      "size": 512
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna20CheckFileSyncTimeoutEv",
+      "va": "0x232fa8",
+      "size": 528
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna15SendFileSyncCmdEliii",
+      "va": "0x232360",
+      "size": 2996
+    },
+    {
+      "name": "_ZN6dinger15DingerImplAudio16OpusConvertToOggEiiiNSt6__ndk112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEiS7_Rih",
+      "va": "0x2f8e0c",
+      "size": 5508
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna24ParseRequestStreamPacketERKNSt6__ndk110unique_ptrINS_18DingerProtocolPackENS1_14default_deleteIS3_EEEERN4Json5ValueE",
+      "va": "0x22edc0",
+      "size": 6592
+    },
+    {
+      "name": "_ZN6dinger14OggDecryptUtil14DecryptOggFileERKNSt6__ndk112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEES9_S9_",
+      "va": "0x28c354",
+      "size": 7784
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna22ParseResponseFileBlockERKNSt6__ndk110unique_ptrINS_18DingerProtocolPackENS1_14default_deleteIS3_EEEE",
+      "va": "0x22a5a8",
+      "size": 356
+    },
+    {
+      "name": "Java_com_android_dingersdk_nativeInterface_DingerAudioTools_OpusConvertToOgg",
+      "va": "0x1c1e48",
+      "size": 200
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna14RequestGapFillElRKNS_7GapInfoE",
+      "va": "0x239758",
+      "size": 980
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna21ParseResponseFileListERKNSt6__ndk110unique_ptrINS_18DingerProtocolPackENS1_14default_deleteIS3_EEEE",
+      "va": "0x22a9e4",
+      "size": 248
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna23ParseResponseFileHeaderERKNSt6__ndk110unique_ptrINS_18DingerProtocolPackENS1_14default_deleteIS3_EEEE",
+      "va": "0x22a31c",
+      "size": 356
+    },
+    {
+      "name": "Java_com_android_dingersdk_nativeInterface_DingerAudioTools_SendFileSyncCmd",
+      "va": "0x1c5924",
+      "size": 292
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna24ParseRequestStreamHeaderERKNSt6__ndk110unique_ptrINS_18DingerProtocolPackENS1_14default_deleteIS3_EEEERN4Json5ValueE",
+      "va": "0x22e340",
+      "size": 2688
+    },
+    {
+      "name": "_ZN6dinger17DingerProtocolAna21ParseResponseFileSyncERKNSt6__ndk110unique_ptrINS_18DingerProtocolPackENS1_14default_deleteIS3_EEEE",
+      "va": "0x22966c",
+      "size": 1268
+    },
+    {
+      "name": "_ZN6dinger14DingerImplBase15SendFileSyncCmdERKNSt6__ndk112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEiii",
+      "va": "0x2fbed4",
+      "size": 132
+    }
+  ]
+}

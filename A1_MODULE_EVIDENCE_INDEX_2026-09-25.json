@@ -1,0 +1,360 @@
+{
+  "scope": "Static evidence for A1 module audit; not device acceptance. H5 snapshot is not proved current Japanese served version.",
+  "modules": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05",
+    "M06",
+    "M07",
+    "M08",
+    "M09",
+    "M10",
+    "M11",
+    "M12",
+    "M13",
+    "M14",
+    "M15",
+    "M16",
+    "M17",
+    "M18",
+    "M19",
+    "M20",
+    "M21",
+    "M22",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28"
+  ],
+  "h5BridgeCoverage": {
+    "audio": [
+      "M17"
+    ],
+    "bleOperation": [
+      "M01",
+      "M07"
+    ],
+    "connectOperation": [
+      "M04"
+    ],
+    "dingerFileOperation": [
+      "M12",
+      "M16"
+    ],
+    "fileOperation": [
+      "M16",
+      "M18"
+    ],
+    "generateMinute": [
+      "M23"
+    ],
+    "getBatchSyncStatus": [
+      "M12"
+    ],
+    "getDeviceList": [
+      "M02",
+      "M04"
+    ],
+    "getDeviceStatus": [
+      "M04",
+      "M28"
+    ],
+    "getFileInfo": [
+      "M15"
+    ],
+    "getFileList": [
+      "M15"
+    ],
+    "getFileListFromDinger": [
+      "M12"
+    ],
+    "grayConfig": [
+      "M28"
+    ],
+    "hasDolbyDecoder": [
+      "M14",
+      "M17"
+    ],
+    "navToClip": [
+      "M19"
+    ],
+    "noteOperation": [
+      "M08"
+    ],
+    "pageOperation": [
+      "M04",
+      "M21"
+    ],
+    "queryFileCount": [
+      "M15"
+    ],
+    "realStreamOperation": [
+      "M10",
+      "M20"
+    ],
+    "recordOperation": [
+      "M05"
+    ],
+    "sendBleCommand": [
+      "M03"
+    ],
+    "settings": [
+      "M06",
+      "M07",
+      "M24"
+    ],
+    "unbind": [
+      "M02",
+      "M04"
+    ],
+    "voiceprintOperation": [
+      "M09"
+    ],
+    "wifiTransfer": [
+      "M13"
+    ]
+  },
+  "sources": [
+    {
+      "path": "apks/8.5.8.3/work/libDingerSdk.so",
+      "size": 7481128,
+      "sha256": "61572524ea708221e99fe8d1c7ab977b84c20050103b97a0fceb01db69fc2c41"
+    },
+    {
+      "path": "apks/8.5.8.3/work/module_native_audit.py",
+      "size": 2170,
+      "sha256": "f5b32d198c7a8ae8f58894118544b437f6beca2fafa1d392d4f60198ed208d31"
+    },
+    {
+      "path": "apks/8.5.8.3/work/module_native_audit.txt",
+      "size": 135328,
+      "sha256": "99eec4b2d21a489e99384269efb528c6dda75524fb81ac446ba1f3f4f742db6e"
+    },
+    {
+      "path": "official_h5/web_assets/g.alicdn.com/dingding/smart-hardware-ai-assistant/0.181.1/mobile-recording/dd3fc05eaf0a1ed1801e.js",
+      "size": 1096889,
+      "sha256": "279fe630e7817e4c77637201f30ddf3dc14d8f47ab566a3ea9596a972d1ec63f"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/Bluetooth/a.java",
+      "size": 79955,
+      "sha256": "10539116f7894b5877e68f59cc1cdb8ca7191a7c6a37a83b74417c535d35737a"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/DingerInterfaceImpl.java",
+      "size": 306244,
+      "sha256": "5de76a76de454da26e995beccd39a56113b006aeec7df0a196b6192aa42e3bc2"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/Bluetooth/BleFrameSender.java",
+      "size": 5125,
+      "sha256": "9b0b20e8bbc40d8c57450b4e2c8c02e6c8fb6e34736ba0d28f1e3e218b5689ca"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/clip/DingerClipActivity.java",
+      "size": 44316,
+      "sha256": "8d2886ca38a8f6aa37fb4a6b81f2b978b4bb0f5759a4f43c8129957bdab0eb5e"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/pt8.java",
+      "size": 252548,
+      "sha256": "7282c51e88cab80815ca7664f472b0ee71faf916a180de16d51f91fbcdeabd26"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/lj2.java",
+      "size": 118100,
+      "sha256": "7d94b20eeb1d55c7546749f3813d917f4794526294942ef669e389fe83907330"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/x78.java",
+      "size": 11510,
+      "sha256": "af3b560621a9df3cd572df988fe4e0fdf47554decb51a414013859d625612f98"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/q98.java",
+      "size": 21603,
+      "sha256": "6f01b0ed8a6fb50e7df97ca2950de2c9feedbcd948e232b675d5929b34319582"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/cq8.java",
+      "size": 27202,
+      "sha256": "585692d24b79c545c3755e1608b4bf02891d31f3ee8666aa346071891977180d"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/gs8.java",
+      "size": 18181,
+      "sha256": "b8157ad70f417e1a9b3c8e9bb63850d7af825dc10b2ae558caebab4e1199abf9"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/n4j.java",
+      "size": 37194,
+      "sha256": "93713305428d48b0070a7dd0b7fe00a05b786e10877c9079715c1dd0b81e6029"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/sjw.java",
+      "size": 7340,
+      "sha256": "9a24c68225c24e246bed9990a226eeb5eb6c2c43f256182f09f2a08b74da090d"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/xgw.java",
+      "size": 8569,
+      "sha256": "9bdb303b30a49379d99342c566360e70acc7957dcb7e4ae479e1214aa924dc25"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/hr8.java",
+      "size": 74579,
+      "sha256": "16ca1a4f0569ed6f174b519713656018c2eb64550ece09be5917ed22cb677775"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/r78.java",
+      "size": 23548,
+      "sha256": "0a071ba063362a7c4b067a1b2736217e8834827463fa523539e11505a83597a2"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/ga8.java",
+      "size": 35457,
+      "sha256": "e5c84c00ab94d03cf352459b7a4d207e9d3dc794f6d8b95bd232f89b7fc17a1b"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/ugu.java",
+      "size": 2446,
+      "sha256": "21242ecd0fb5dba6f29884ed318f252d6871c3273f8f5c3fd89fd9eb51d50e70"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/hsp.java",
+      "size": 8271,
+      "sha256": "e270e0eded4880805a3bc5e91b78523a109df6198e77d624f54d9eefeb5c931e"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/ecv.java",
+      "size": 17059,
+      "sha256": "93337c275d81d74d18a9243cbe55a74b2c95c7d4cdb89fffb5a602e2a8c03749"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/zz4.java",
+      "size": 5081,
+      "sha256": "5e0031c1d42739630b6fbd7fb8d6f0daf54ab2f633238bd4ebf3b56335928d9a"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/defpackage/p73.java",
+      "size": 29716,
+      "sha256": "d5d577d85d63878a113ba734c60a60fe1c05adbfc7826ea61ef057f6fe5cad4a"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/data/DeviceSyncStatus.java",
+      "size": 7523,
+      "sha256": "b8ee9309ff7fb578c4fd132b879d0d3596f7e91c3235e68d861d93bd7bff675a"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/db/DingerEntryObject.java",
+      "size": 7210,
+      "sha256": "3efaa28bc626f2fc54806a592f3dde8370d37a50ed15e6de0ee6f0747f9e877d"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/wifi/DingerDownloader.java",
+      "size": 20152,
+      "sha256": "8ebf939e36bfbbbe45ab13e7d742b14e965a6523d846493d6a31bb0721a66550"
+    },
+    {
+      "path": "apks/8.5.8.3/work/src/sources/com/alibaba/dingtalk/dingerimpl/wifi/WifiTransferDialog.java",
+      "size": 29601,
+      "sha256": "a446940c815d996db2346aac1a7014eaa6e76756a6c90038c2dfc13444044611"
+    }
+  ],
+  "nativeFunctions": [
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV29SetAesKeyERKNSt6__ndk112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE",
+      "elfVA": "0x30ebf8",
+      "size": 348
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV27FillGapEPcij",
+      "elfVA": "0x30e844",
+      "size": 384
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV25ResetElji",
+      "elfVA": "0x30c730",
+      "size": 252
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV24StopEbRN4Json5ValueEb",
+      "elfVA": "0x30bddc",
+      "size": 1768
+    },
+    {
+      "symbol": "_ZN6dinger17DingerProtocolAna18ProcessPendingGapsEv",
+      "elfVA": "0x239b2c",
+      "size": 308
+    },
+    {
+      "symbol": "_ZN6dinger17DingerProtocolAna9SetAesKeyERKNSt6__ndk112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE",
+      "elfVA": "0x239718",
+      "size": 48
+    },
+    {
+      "symbol": "_ZN6dinger17DingerProtocolAna24ParseRequestStreamPacketERKNSt6__ndk110unique_ptrINS_18DingerProtocolPackENS1_14default_deleteIS3_EEEERN4Json5ValueE",
+      "elfVA": "0x22edc0",
+      "size": 6592
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV25CountEjjj",
+      "elfVA": "0x30e9c4",
+      "size": 276
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV212RecordGapEndEj",
+      "elfVA": "0x30da68",
+      "size": 368
+    },
+    {
+      "symbol": "_ZN6dinger14DingerImplBase10AesEncryptERKNSt6__ndk112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEES9_",
+      "elfVA": "0x2fbaa0",
+      "size": 224
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV29SeekWriteEPcij",
+      "elfVA": "0x30c82c",
+      "size": 1264
+    },
+    {
+      "symbol": "_ZN6dinger17DingerProtocolAna12ParseRequestERKNSt6__ndk110unique_ptrINS_18DingerProtocolPackENS1_14default_deleteIS3_EEEE",
+      "elfVA": "0x22c0a8",
+      "size": 1672
+    },
+    {
+      "symbol": "_ZN6dinger7AESUtil10aesEncryptENSt6__ndk112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEES7_",
+      "elfVA": "0x2508f4",
+      "size": 1192
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV212DetectSeqGapEjRb",
+      "elfVA": "0x30d784",
+      "size": 196
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV214RecordGapStartEj",
+      "elfVA": "0x30d848",
+      "size": 500
+    },
+    {
+      "symbol": "_ZNK6dinger20DingerStreamRecordV213ValidateMagicEPKci",
+      "elfVA": "0x30d20c",
+      "size": 108
+    },
+    {
+      "symbol": "_ZN6dinger7AESUtil16dtiot_os_hal_aesEPhS1_iS1_S1_",
+      "elfVA": "0x250d9c",
+      "size": 168
+    },
+    {
+      "symbol": "_ZN6dinger20DingerStreamRecordV211EncryptDataEPKciRi",
+      "elfVA": "0x30d04c",
+      "size": 448
+    }
+  ]
+}

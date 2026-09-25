@@ -1,0 +1,154 @@
+{
+  "version": "8.5.8.3",
+  "abi": "arm64-v8a",
+  "scope": "native backend and JNI sources only; no frontend; local extraction, not runtime accepted",
+  "entries": [
+    {
+      "file": "jniLibs/arm64-v8a/libDingerSdk.so",
+      "origin": "split_demand1.apk!/lib/arm64-v8a/libDingerSdk.so",
+      "sha256": "61572524ea708221e99fe8d1c7ab977b84c20050103b97a0fceb01db69fc2c41",
+      "size": 7481128
+    },
+    {
+      "file": "jniLibs/arm64-v8a/libc++_shared.so",
+      "origin": "base.apk!/lib/arm64-v8a/libc++_shared.so",
+      "sha256": "5f56227d6606ccb9dcceb4d7daa80d4984c658d48601abcec2dfdb1ddbe83c79",
+      "size": 977256
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/AudioClipParam.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "37db22b1ff6c50f4fc9a0eb06227652df1f1da51a68c57234855567b42f134ea",
+      "size": 783,
+      "original_sha256": "093f6f7c652b0b92734c2ff99164ab0c8c92db1f54fe9ab3ff10e79bf68dd18e",
+      "original_size": 796,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/AudioFileAttr.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "4087717b408f5aa15aac80ccb12d55885813a0280566e91151fe82ad4962715f",
+      "size": 1248,
+      "original_sha256": "40cb4b5251f72e3bff86270270922687875d148d8b97f7284c9ddf21cd42962c",
+      "original_size": 1261,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/AudioFileParam.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "cae501ba9249b26fd7bb30dc09ed2042f05cbd32be45fcfe9526542429a3e378",
+      "size": 884,
+      "original_sha256": "0f27b00966a22c8b8d7105d3ca9d2b2a63314cb903916a6644dd1c8a18a369a9",
+      "original_size": 897,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/AudioFrameBuffer.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "0355591a9411508dd1ec6f5ff8697e119b201df6a4ef11234d75cdbb1b977861",
+      "size": 799,
+      "original_sha256": "98afaf88951db95500f0b675b0af3c6d0f8dfcc172a055821d7afed3c61be1f4",
+      "original_size": 812,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/CalledByNative.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "2d13383f495a8688741c878c6324424faff75cafe353428067b27e79d1839fe5",
+      "size": 457,
+      "original_sha256": "df9cd90fd957980054d8d7aa9a03f7b733a008d8d445899e6eb2f3fa70f8a8a7",
+      "original_size": 470,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/DingerAudioTools.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "a25eb88561fb56ce9f63562861cea0801d73b4d07f2070345793ffa77c4d7be9",
+      "size": 10701,
+      "original_sha256": "ec6f60f7344aea5ca03f9a62f6632e243b8aaad27bec77e9d90ceeac593fe315",
+      "original_size": 10714,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/DingerBleRequest.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "c5d1bb8a63f812185215a0db92e3c2070362d2011b5d28aeb154e9aca1179dfa",
+      "size": 795,
+      "original_sha256": "baddffb7d6f6fe7a1763a2ff03f804cada3cea6603ba38f5925b515344827ce8",
+      "original_size": 808,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/DingerCommandHelper.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "8713d3a00916c078b08c409581789558f4ebec9ccaa5dd5a78bc4ff7109d8aae",
+      "size": 9894,
+      "original_sha256": "3ad1063b059f9a25be2256f6f562d050a2539b528a03a80bdbd5cf1987c35876",
+      "original_size": 9907,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/DingerEvent.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "a22064ecd52b8d8429fecef550a29f4df87a69e2efe2ba6fc95d7ceb3f63e710",
+      "size": 976,
+      "original_sha256": "854e688d40496fb8ddec6613cee7878461a407e8571dce39833938b61fe15f92",
+      "original_size": 989,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/dtiot_ble_request.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "8017f3bda9422bb824e96bb34efdd62619a71d1d55de26877814ea56cb6700bc",
+      "size": 3414,
+      "original_sha256": "ac36b3a2504ac92701f0f6ebfc6cb59240b55f08a8c11648c58bd4006b5cc711",
+      "original_size": 3427,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/DtiotAudioMode.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "51596fe4bb574566a9ad7fb61abae6bd2d9b5cdfe56fdd57adc8bd0c2f586f3e",
+      "size": 455,
+      "original_sha256": "5104f6d9ac9cb860b5256b34cf9091dc1214a10e9773c9167ee8742bbbc969b2",
+      "original_size": 468,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/DtIotEvent.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "6e6d42b466083ccdef8c11cf32318fcf37e7269da09bcb161f290551352f1383",
+      "size": 478,
+      "original_sha256": "096dc813222d8480c60e84b6bbf637c383ea651d670606b261734b1c0c7e3047",
+      "original_size": 491,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/ExportProgressCallback.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "c0e6f48a89228d1ce8cdb71793f9ca7e2e1dc20f26df20099f02702f3bea33c5",
+      "size": 215,
+      "original_sha256": "5fd80b279305a87cef7209342a56afb837fd564b8193ec350b756922f91a4a43",
+      "original_size": 228,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/MergeProgressCallback.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "60e92152f97732c20389b1877250888013954eb957abfeb0b418abc798875711",
+      "size": 214,
+      "original_sha256": "eb1e01a8982c480791178f3ac110d82e77bb15708c0c159f4ca457e8c1cb6579",
+      "original_size": 227,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    },
+    {
+      "file": "java/com/android/dingersdk/nativeInterface/RecvMsgCallback.java",
+      "origin": "base.apk!/classes27.dex -> JADX 1.5.2",
+      "sha256": "4deff4c37cc5b8860861ef30496be97721c01375bc540612f2a6d070282113a3",
+      "size": 553,
+      "original_sha256": "a5466304a8ec556cc91369ffebe82c8af8ab2460170ec3e2ff3c3c30f70e0df9",
+      "original_size": 566,
+      "publication_transform": "Removed local filesystem path from JADX source comment; executable declarations unchanged."
+    }
+  ]
+}

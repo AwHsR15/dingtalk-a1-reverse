@@ -1,199 +1,98 @@
-# dingtalk-a1-reverse
+# DingTalk / TALIX A1 录音卡开发工具与协议研究
 
-逆向 DingTalk A1 / TALIX & DingTalk A1 AI 录音卡的蓝牙私有协议。
-Reverse engineering of the DingTalk A1 / TALIX & DingTalk A1 AI recording card's private Bluetooth protocol.
+让 A1 录音卡接入自己的客户端、语音服务和自动化工作流。
 
----
+## 项目是什么
 
-## 中文说明
+这是一个面向 **DingTalk A1 / TALIX & DingTalk A1** 的互操作研究与开发资料库，包含蓝牙协议、设备鉴权、音频和文件格式、官方后台模块、调用接口以及接入指南。
 
-### 这是什么
+项目提供两类材料：可独立使用的协议分析工具，以及从官方 Android App 提取的设备/音频后台组件。开发者可以编写自己的界面和业务功能，复用后台处理，不必重写每个音频算法。**不包含官方前端，也不是已完成全部验收的成品客户端。**
 
-**DingTalk A1**(日本销售版本名为 **TALIX & DingTalk A1**)是阿里巴巴钉钉团队推出的
-卡片式 AI 录音硬件。手机通过官方 App(钉钉国际版,包名 `com.alibaba.dingtalk.global`)
-与设备用 **BLE(蓝牙低功耗)私有协议**通信,官方未公开该协议。
+当前主要研究版本为官方 Android **8.5.8.3**、日本销售版 A1。其他地区、型号和固件需分别验证。
 
-本仓库记录了对该协议的逆向分析过程与结果,目标是实现**协议复刻**
-(clean-room 第三方客户端)——保持设备原生行为不变,用自建客户端替代官方 App,
-让持有该设备的人能把自己的录音数据接入自己的工作流,而不被绑定在官方 App 上。
+## 能做什么
 
-**这不是破解或绕过安全机制**:鉴权流程本身依赖设备绑定时云端下发的密钥,
-本项目验证的是"绑定后能否离线完成后续通信",而非绕过绑定本身。
+- **理解并实现 BLE 通信**：服务与特征、消息头、分片重组、命令和主动事件。
+- **使用已有设备凭据离线鉴权**：不需要每次连接都查询官方账号服务；运行客户端的手机无需 root。
+- **读取设备状态、文件列表并下载录音**：已有独立客户端历史实测记录。
+- **研究和处理音频**：BABA/DTYJ 容器、加密标志、帧结构、实时流与多帧消息。
+- **复用官方后台**：提供 ARM64 原生库、配套 JNI 接口及核心 JAR，用于文件同步、音频解码、转换、导出、合并和裁剪等。
+- **接管音频的后续用途**：使用自己的 ASR、翻译、总结、保存或自动化逻辑。
+- **查阅官方机制**：设备绑定、密钥查询、按键模式、定时任务、云文件与转写任务的调用关系。
 
-### 快速定位(给同样在查这台设备的人 / AI)
+## 不能做什么 / 当前限制
 
-如果你在找以下任何一项的信息,本仓库大概率有答案,直接看
-[FINDINGS.md](FINDINGS.md):
+- **不能无凭据连接任意录音卡**。同一卡的凭据可迁移到不同手机；不同卡应分别取得凭据。
+- **尚未解决完全离线的首次绑定，以及通用的无 root 首次取密钥**。已有凭据后的离线运行是另一回事。
+- **不提供任意按键脚本**。右键已有1000/1001模式证据；未发现官方左键自定义接口。
+- **尚未验证本研究设备的卡内离线定时**。官方能力门槛与历史设备报告值不一致。
+- **不宣称完整支持 Wi-Fi 快传、固件提取/刷写或所有新音频通道**。
+- **不附带官方云账号权限、付费转写权益或离线识别模型**。接口清单不能替代服务授权。
+- **新版 SDK 尚未完成独立客户端全套实机验收**。提取、接口核对和编译成功不等于运行与断线恢复已全部通过。
 
-- 设备识别:USB `VID:PID = 17EF:0101`,固件基于 **Apache NuttX**,
-  主控芯片 **恒玄科技 Bestechnic BES2800**
-- 手机与设备的通信方式:**纯 BLE GATT**,并非 USB
-- BLE GATT 服务/特征 UUID:主服务 `0000fe3c-...`,命令特征 `fe1c`(handle 0x8002),
-  通知特征 `fe1b`(handle 0x8005)
-- 应用层包头格式、完整命令表(opcode)、Opus 音频帧结构
-- 鉴权算法:`token = AES-128-CBC(key=deviceSecret[:16], iv=key, pt=random)`,
-  已用真实抓包数学验证通过
-- 录音数据在 BLE 传输链路上是否加密的实测结论
-- 私有音频容器 `BABA/DTYJ` 的**完整头部图**(三处不标准布局)、三种真机变体
-  (记录长 84 / 164 / 80)、头里的**加密标志位**,已用 33 个真机文件验证
+## 可以用来做什么
 
-### 内容结构
+- 开发自己的 Android 录音卡客户端和本地录音资料库。
+- 将设备录音送入本地或自选的语音识别、翻译、纪要系统。
+- 基于设备事件和音频结果实现备忘、语音助手或个人工作流。
+- 分析自己的 BLE 抓包、定位分片/丢包问题、验证容器格式。
+- 研究官方后台的输入输出和调用方式，减少重复实现。
 
-| 文件 | 内容 |
-|---|---|
-| [FINDINGS.md](FINDINGS.md) | 完整逆向笔记:设备识别、GATT 结构、命令表、鉴权算法、音频格式、已知/未知项 |
-| [CODEX_ASSIST.md](CODEX_ASSIST.md) | 协作记录:第二方 AI(Codex)对协议解析工具的独立校验与修正 |
-| [tools/](tools) | 分析工具:btsnoop(手机蓝牙抓包)解析器、协议解码器、鉴权算法验证脚本、私有音频容器解析器 |
+## 大致方法与结果
 
-### 相关项目与交叉验证
+采用 **APK 静态分析 → JNI/原生接口核对 → HCI 抓包交叉验证 → 独立客户端测试 → 离线回归** 的方式研究。不同证据层分别记录，不将静态代码存在视为实机功能已通过。
 
-[Shawn-TKD/dingtalk-a1-pc-tools](https://github.com/Shawn-TKD/dingtalk-a1-pc-tools)
-是另一个独立的 A1 本地工具箱(PC 端 Python + Web 控制台)。两个项目是各自
-独立做出来的,结论却对上了 —— 这对双方都是有意义的验证:
+| 研究范围 | 主要结果 |
+| --- | --- |
+| 蓝牙协议 | FE3C服务、FE1C写、FE1B通知；8字节应用头与跨ATT重组 |
+| 连接鉴权 | 0x0008随机挑战 → 本地AES应答 → 0x0133；历史实测鉴权和文件下载通过 |
+| 官方后台 | 2个原生库、15个顶层Java文件、42个native入口；9个核心源可编译为JNI JAR |
+| 音频可靠性 | 已识别单消息多帧；分析了SDK补包和文件处理路径，仍需新版接入验收 |
+| 云业务契约 | 静态索引覆盖11个相关服务、90个非升级方法、185个关联模型 |
+| 离线工具 | 21项合成测试通过，覆盖重组、容器和遥测解析 |
 
-**互相印证的部分**(同一结论,来源独立):
+**主要结论：已有凭据后，设备通信和音频处理可以在本地进行；首次凭据取得与云账号授权仍需单独处理。官方后台核心可以被复用，但宿主必须正确提供蓝牙、目录、配置、凭据和回调。**
 
-- 主服务 UUID `0000fe3c-…`、命令特征 `fe1c`、通知特征 `fe1b`
-- 8 字节帧头:`类型(0x13/0x31) + 命令(16 位) + 序号 + 长度(32 位)`
-- 鉴权:`0x0008` 取 challenge → `0x0133` 提交
-  `AES-128-CBC(key=deviceSecret[:16], iv=key)` 的 token
-- `deviceSecret` 是**设备级**凭据,不由 SN/DID/MAC 推导,跨设备用会返回 `code:501`
-- 私有音频容器是 `BABA/DTYJ`
+## 文档与下载
 
-**本项目额外覆盖的部分**:实时流 `0x0117` 与其开关
-`upload_stream`、WiFi 热点大文件通道、加密开关的实测影响、
-官方 H5 前端的 JSAPI 契约。
+| 内容 | 入口 |
+| --- | --- |
+| 完整研究成果与证据边界 | [研究总览](docs/RESEARCH_SUMMARY.md) |
+| root提取自己的凭据、无root手机使用 | [凭据获取指南](docs/CREDENTIALS_AND_ROOT.md) |
+| 利用官方后台开发自己的软件 | [SDK接入指南](docs/SDK_INTEGRATION.md) |
+| 已提取的官方后台文件 | [8.5.8.3 ARM64组件](vendor/dinger-sdk/8.5.8.3/) |
+| 文件与模块的对应关系 | [模块映射](A1_BACKEND_MODULE_MAP_2026-09-25.md) · [接口索引](A1_BACKEND_INTERFACE_INDEX_2026-09-25.json) |
+| 绑定、密钥与本地化 | [绑定机制](A1_BINDING_KEY_FLOW_2026-09-25.md) · [本地配对可行性](A1_LOCAL_ONLY_PAIRING_FEASIBILITY_2026-09-25.md) |
+| 业务调用和云接口 | [综合研究](A1_REPLACEMENT_RESEARCH_SYNTHESIS_2026-09-25.md) · [云契约](CLOUD_CONTRACT_ROUTES_8.5.8.3_2026-09-25.md) |
+| 详细协议和历史实验 | [协议笔记](FINDINGS.md) · [原生流程](NATIVE_CLIENT_FLOW_2026-09-24.md) |
 
-**两边曾经看似冲突的一处,真机验证后结论是"都对"**:他们的 `dtyj_to_ogg.py`
-不做解密,本项目早先实测包体是密文。用测试机上 33 个真机容器逐一检验后发现:
-**加密是按文件的**,容器头偏移 58 有一个标志位(32 个为 1 的全是密文,1 个为 0 的是明文)。
-他们的转换器对明文原件完全正确,对加密文件只能转出噪声;
-另外容器存在前缀长为 0 的 v1.6 变体,固定按 4 字节切会整体错位。
-`tools/dtyj_parse.py` 会同时给出加密标志和按 Opus TOC 实测的判定。
+旧研究记录中的阶段性结论以[当前总览](docs/RESEARCH_SUMMARY.md)和新版专题修订为准。证据索引中的本地文件引用用于复现定位，不表示原始私人样本随仓库公开。
 
-### 方法论,不是攻击工具
+## 使用离线工具
 
-本项目采用的是**被动抓包 + 静态反编译**,不涉及固件刷写、不绕过任何账号或云端鉴权:
+Python 3.11或更新版本，在仓库根目录运行：
 
-1. 用 Android 系统自带的 **蓝牙 HCI 侦听日志**(开发者选项,无需 root)
-   经 `adb bugreport` 导出,还原手机 App 与设备之间的真实 BLE 报文
-2. 对官方 App 做**只读反编译**,定位协议实现代码,解释抓包中字段的含义
-3. 用已提取的设备凭据对鉴权算法做**离线数学验证**(而非猜测)
+```sh
+python -m unittest discover -s tools -p "test_*.py" -v
+```
 
-### 状态
+鉴权计算工具额外需要 `pycryptodome`，输入格式见[示例](tools/verify_pairs.example.json)：
 
-协议主体(连接、鉴权、列文件、取文件、实时流、控制命令)已解出并验证。
-仍有少量边缘功能(如开启加密后文件下载格式、WiFi 热点大文件通道)待补充,
-详见 FINDINGS.md 末尾的待办列表。**尚未发布可运行的第三方客户端实现。**
+```sh
+python -m pip install pycryptodome
+python tools/verify_auth.py extract/verify_pairs.json
+```
 
-### 免责声明
+仅将自己的凭据和抓包保存在本地。原始录音、账号缓存、HCI/bugreport不随仓库发布。`native_event_names.py`还需要`pyelftools`和`unicorn`，用于离线原生事件枚举。
 
-本项目仅用于个人设备的互操作性研究(interoperability research),
-分析对象是作者本人持有的设备与账号数据。不提供、不托管任何绕过账号鉴权、
-盗取他人数据或攻击云端服务的内容。
+## 来源与许可证
 
----
+原创研究说明和自写工具采用 [MIT](LICENSE)。`vendor/`中的官方/第三方提取件**不在该授权范围内**，来源、哈希和权利边界见 [NOTICE](NOTICE.md)。公开下载不代表这些组件获得了本项目的MIT授权。
+
+相关项目：[Shawn-TKD/dingtalk-a1-pc-tools](https://github.com/Shawn-TKD/dingtalk-a1-pc-tools)。该项目基于本仓库的公开线索实现了PC工具，并提供包括跨卡鉴权失败在内的实测记录；引用时区分外部结果与本项目测试。
 
 ## English
 
-### What this is
+Interoperability research and developer resources for DingTalk / TALIX A1 recorders: BLE framing and authentication, audio/file formats, official Android backend components, and integration guides.
 
-**DingTalk A1** (sold in Japan as **TALIX & DingTalk A1**) is a credit-card-sized
-AI voice recorder made by Alibaba's DingTalk team. The companion mobile app
-(DingTalk Global, package `com.alibaba.dingtalk.global`) talks to the device over
-an **undocumented BLE (Bluetooth Low Energy) private protocol**.
-
-This repository documents a reverse-engineering effort to understand that protocol,
-with the goal of **protocol reimplementation** (a clean-room third-party client) —
-keeping the device's native firmware behavior unchanged, while replacing the
-official app with a self-built client so the owner can route their own recordings
-into their own workflow instead of being locked to the vendor app.
-
-**This is not a jailbreak or an auth bypass.** The pairing/authentication flow still
-depends on a secret provisioned by the vendor's cloud at bind time; this project
-verifies that *after* binding, subsequent communication can be reproduced offline —
-it does not circumvent the binding step itself.
-
-### Quick pointers (for anyone — human or AI — researching this device)
-
-If you're looking for any of the following, [FINDINGS.md](FINDINGS.md) most likely
-has it:
-
-- Device identification: USB `VID:PID = 17EF:0101`, firmware based on
-  **Apache NuttX**, SoC is **Bestechnic (恒玄科技) BES2800**
-- How the phone actually talks to the device: **pure BLE GATT**, not USB
-- BLE GATT service/characteristic UUIDs: primary service `0000fe3c-...`,
-  command characteristic `fe1c` (handle 0x8002), notify characteristic `fe1b`
-  (handle 0x8005)
-- Application-layer frame header format, the full opcode/command table, and the
-  Opus audio frame layout
-- The authentication algorithm:
-  `token = AES-128-CBC(key=deviceSecret[:16], iv=key, pt=random)`,
-  verified against real captured (random, token) pairs
-- Whether recorded audio is actually encrypted on the BLE transport (tested, not assumed)
-- The `BABA/DTYJ` private audio container: full 80-byte header map (three non-standard
-  quirks), three real-device variants (record size 84 / 164 / 80), and the per-file
-  **encryption flag** at offset 58 — verified on 33 real files
-
-### Repository layout
-
-| File | Contents |
-|---|---|
-| [FINDINGS.md](FINDINGS.md) | Full reverse-engineering notes: device ID, GATT layout, command table, auth algorithm, audio format, known/open items |
-| [CODEX_ASSIST.md](CODEX_ASSIST.md) | Collaboration log: independent verification/fixes to the protocol parsing tools by a second AI (Codex) |
-| [tools/](tools) | Analysis tooling: btsnoop (Android Bluetooth capture) parser, protocol decoder, auth algorithm verifier |
-
-### Related work and cross-validation
-
-[Shawn-TKD/dingtalk-a1-pc-tools](https://github.com/Shawn-TKD/dingtalk-a1-pc-tools)
-is an independent A1 toolkit (Python + web console, PC side). The two projects
-were built separately and arrived at the same conclusions, which is meaningful
-corroboration for both:
-
-**Independently confirmed by both**: service UUID `0000fe3c-…`, command
-characteristic `fe1c`, notify characteristic `fe1b`; the 8-byte frame header
-(`type + 16-bit command + sequence + 32-bit length`); authentication via
-`0x0008` challenge then `0x0133` with an
-`AES-128-CBC(key=deviceSecret[:16], iv=key)` token; `deviceSecret` being a
-per-device credential that is *not* derived from SN/DID/MAC (cross-device use
-returns `code:501`); and the `BABA/DTYJ` private audio container.
-
-**Additionally covered here**: the `0x0117` live stream and its
-`upload_stream` switch, the Wi-Fi hotspot bulk-transfer channel, measured
-effects of the encryption switch, and the official H5 front-end JSAPI contract.
-
-**An apparent disagreement, resolved on real files: both are right.** Their
-`dtyj_to_ogg.py` does no decryption, while this project measured ciphertext payloads.
-Checking 33 real containers from a test phone shows that **encryption is per file**,
-with a flag byte at header offset 58 (all 32 files with flag 1 are ciphertext; the one
-with flag 0 is plaintext). Their converter is correct for plaintext originals and
-yields noise for encrypted ones; a v1.6 variant with a 0-byte record prefix also
-exists, which a fixed 4-byte prefix would misalign. `tools/dtyj_parse.py` reports
-both the header flag and a verdict measured from Opus TOC bytes.
-
-### Methodology, not a hacking toolkit
-
-This is **passive packet capture + static decompilation**, not firmware flashing,
-and it does not bypass any account or cloud authentication:
-
-1. Android's built-in **Bluetooth HCI snoop log** (developer options, no root
-   required), exported via `adb bugreport`, to recover the real BLE traffic
-   between the official app and the device
-2. **Read-only decompilation** of the official app to locate the protocol
-   implementation and explain what the captured fields mean
-3. **Offline mathematical verification** of the auth algorithm against extracted
-   device credentials — not guesswork
-
-### Status
-
-The core protocol (connect, authenticate, list files, fetch files, live audio
-stream, control commands) has been decoded and verified. A few edge cases remain
-open (e.g. the file-download format once on-device encryption is enabled, and the
-WiFi-hotspot channel used for bulk transfer) — see the open items at the end of
-FINDINGS.md. **No runnable third-party client has been published yet.**
-
-### Disclaimer
-
-This project is limited to interoperability research on a device and account the
-author owns. It does not provide or host anything that bypasses account
-authentication, exfiltrates other users' data, or attacks vendor cloud services.
+Existing device credentials allow local authentication on another host without root. Fully offline first-time onboarding is not established. Extracted SDK components have static/compile verification, not complete runtime acceptance. Original tools and research are MIT; extracted third-party components are excluded from that license. No official frontend, real credentials, recordings or raw captures are included.

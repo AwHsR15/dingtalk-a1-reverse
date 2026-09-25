@@ -1,5 +1,7 @@
 # DingTalk A1 / TALIX A1 逆向笔记
 
+> 历史研究记录：当前结论和修订以 [2026-09-25研究总览](docs/RESEARCH_SUMMARY.md) 为准。旧条目中的“完全/全部解出”、密钥来源时机、跨设备、Wi-Fi或固件能力等措辞不代表当前全功能验收。
+
 设备:TALIX & DingTalk A1(日本版),USB 连接 Windows 11
 记录时间:2026-08-11
 
@@ -89,7 +91,7 @@ microADB 实现(`apps/system/adb`,恰好解释了那个空壳 ADB 接口的来�
 - 作者用 Python 写了走 UART 的 flasher 与自动化测试脚本
 - 未使用 SWD/JTAG
 
-## 5. 连接方式(已由用户确认 —— 修正早期误判)
+## 5. 连接方式(已验证，修正早期误判)
 
 | 链路 | 介质 | 用途 |
 |---|---|---|
@@ -247,7 +249,7 @@ payload 长度均为 14124/14972/41944 字节,SHA-256 指纹也逐条完全相�
 > **尚不能断言 `0x0115` 文件下载始终为明文。**需要在开启加密后新建录音、
 > 清空/截断旧 btsnoop 后单独下载该新文件,再检查新 fid 的 payload。
 
-**工具状态(2026-08-11 Codex 协助修复)**:`tools/protocol_analyze.py` 已按
+**工具状态(2026-08-11 解析器修订)**:`tools/protocol_analyze.py` 已按
 8 字节头中的 32 位大端长度重组跨 ATT 的 507 字节续片,不再把续片误列为
 伪命令(如 `0x082B`)。真实抓包由 2942 个 ATT 片段重组为 2804 条完整消息,
 长度校验 2804/2804 全部通过;离线回归测试见 `tools/test_protocol_reassembly.py`。
@@ -355,12 +357,12 @@ native 只做封包/加密/传输 —— 对复刻客户端非常有利。
 
 ## 11. 第三方客户端实测(2026-08-11,已全程跑通)
 
-客户端实现在归忆安卓端:`D:\Claude\guiyi\android\app\src\main\java\com\guiyi\recorder\a1\`
+客户端实现在独立客户端安卓端:`<workspace>/example-client\android\app\src\main\java\com\example-client\recorder\a1\`
 (`A1Protocol` 纯协议 / `A1Auth` 鉴权 / `A1Client` BLE 传输 / `A1Session` 业务
 / `A1Store` 落盘 / `OggOpusWriter` 容器)。协议层 17 个 JVM 单测,向量取自真实抓包。
 
 **PC 不能当宿主**:本机所有蓝牙适配器状态均为 `Unknown`(不在线),
-BLE 客户端只能跑在安卓上。实测机 Galaxy Z Fold 6 / Android 16。
+BLE 客户端只能跑在安卓上。实测机 Android 16测试终端。
 
 ### 11.1 已在真机验证通过
 
@@ -530,9 +532,9 @@ BLE 客户端只能跑在安卓上。实测机 Galaxy Z Fold 6 / Android 16。
   错的那个看形态是字节序读反了的产物,前四字节正好是真实值的倒序。
 - 每次连接必须 `gatt.close()` 释放:安卓每进程只有 32 个 GATT 客户端槽位,漏一次少一个。
 
-## 11.5 官方 SDK 已内嵌进归忆(2026-08-11)
+## 11.5 官方 SDK 已内嵌进独立客户端(2026-08-11)
 
-把官方件原样搬进 `D:\Claude\guiyi\android`:
+把官方件原样搬进 `<workspace>/example-client\android`:
 
 | 内容 | 去处 |
 |---|---|
@@ -549,7 +551,7 @@ BLE 客户端只能跑在安卓上。实测机 Galaxy Z Fold 6 / Android 16。
 - `com.alibaba.wukong.im.message.MessageContentImpl` — 只用了 `KEY_RICH_TEXT_PAYLOAD`(= `"payload"`)
 
 桥接方式(`A1Native.kt`):原生 SDK 不碰蓝牙,要发的字节从 `OnSendData` 回调吐出来,
-收到的字节由宿主调 `PushBleRecvData` 喂回去 —— 正好接到归忆已有的 BLE 传输上。
+收到的字节由宿主调 `PushBleRecvData` 喂回去 —— 正好接到独立客户端已有的 BLE 传输上。
 
 内嵌后拿到的、自己实现不了的能力:
 
@@ -561,7 +563,7 @@ BLE 客户端只能跑在安卓上。实测机 Galaxy Z Fold 6 / Android 16。
 - `StartOta` / `StopOta`
 
 > **闭源库,来自用户自己设备,仅供本机互操作,不可再分发。**
-> 归忆的纯 Kotlin 实现保留着并且能独立工作(鉴权/列表/下载都已验证),
+> 独立客户端的纯 Kotlin 实现保留着并且能独立工作(鉴权/列表/下载都已验证),
 > 原生 SDK 加载不上时自动回落,不是硬依赖。
 
 服务提供商相关的东西(corpId、自报 SDK 版本/机型、`InitConfig`)抽到了
@@ -622,10 +624,10 @@ realStreamOperation { deviceId, operationName:"set", operationParam:{
 
 ## 11.7 第三方客户端 + 自定义转写服务商(已端到端验证)
 
-2026-08-12 在 Y700(TB320FC/LineageOS)上全链路跑通,**完全不经阿里云**:
+2026-08-12 在 Android测试终端上全链路跑通,**完全不经阿里云**:
 
 ```
-A1 硬件 --BLE--> 归忆(离线鉴权) --流式 Ogg 封装--> Soniox --> 实时字幕
+A1 硬件 --BLE--> 独立客户端(离线鉴权) --流式 Ogg 封装--> Soniox --> 实时字幕
 ```
 
 - 离线鉴权在**一台全新设备**上验证成功(用提取的 deviceSecret 现场算 token,
@@ -638,7 +640,7 @@ A1 硬件 --BLE--> 归忆(离线鉴权) --流式 Ogg 封装--> Soniox --> 实时
 `audio_format:"auto"` 让服务端识别 ogg —— 手机端全程不碰编解码。
 实时场景要把每页包数从 50 调到 10(50 包≈1 秒,会原样变成字幕延迟)。
 
-客户端实现见 `D:\Claude\guiyi\android\app\src\main\java\com\guiyi\recorder\a1\transcribe\`
+客户端实现见 `<workspace>/example-client\android\app\src\main\java\com\example-client\recorder\a1\transcribe\`
 (`Transcription.kt` 服务商抽象 / `SonioxProvider.kt` / `A1LiveTranscriber.kt`)。
 
 ## 12. 仍未掌握
@@ -765,7 +767,7 @@ if (TextUtils.equals(source, "device_voiceprint") || sg7.b()) {
 # 14. 官方能力全量测绘（2026-08-27，基于 8.3.48.3）
 
 来源：`apks/8.3.48.3/`（这台机器上实际在跑的 14 个 split，全量提取）、
-既有 `decompiled/base/sources`、以及归忆已内嵌的
+既有 `decompiled/base/sources`、以及独立客户端已内嵌的
 `app/src/main/java/com/android/dingersdk` + `libDingerSdk.so`。
 
 本节把第 8 节和第 12 节里"尚未掌握"的条目**大部分结清**，并补齐了
@@ -800,7 +802,7 @@ WiFi 快传、文件加密、设备侧命令表三块。
 的 `battery_key`。
 
 > 注意 `sendConnectDevice` 用的字段名是 **`corpId`**（驼峰），而
-> `sendGetRandom` 也是 `corpId`。归忆里 `A1Session` 发的是 `corp_id`
+> `sendGetRandom` 也是 `corpId`。独立客户端里 `A1Session` 发的是 `corp_id`
 > （下划线）且实测能通过鉴权 —— 说明固件对这个字段名是宽容的，
 > 或者两种都认。**不要据此推断其它字段也宽容。**
 
@@ -923,7 +925,7 @@ Data ID: data   Data size: 18640   CRC: 0x817a932e
 `GetOpusFileSize(path)`
 
 > **这套接口是进程内单实例**：打开/读帧/关闭操作的是同一份全局状态，
-> 同一时刻只能有一个文件在读。归忆里播放器和转写如果都要用，
+> 同一时刻只能有一个文件在读。独立客户端里播放器和转写如果都要用，
 > **必须共用同一把锁**。
 
 **格式转换与编辑**：`OpusConvertToOgg(fid)`、
@@ -953,7 +955,7 @@ Data ID: data   Data size: 18640   CRC: 0x817a932e
 
 SDK 日志自己也写了：`initCovertToOgg ... privateHeaderOffset: 80`。
 
-归忆一度把前 80 字节切掉，得到一个"看起来标准"的 Ogg —— 同步、时长解析
+独立客户端一度把前 80 字节切掉，得到一个"看起来标准"的 Ogg —— 同步、时长解析
 都正常了，但 **`MediaExtractor` + `MediaCodec` 仍然打不开**
 （configure/start 之后第一次 dequeue 就报
 `Pending dequeue output buffer request cancelled` /
@@ -969,20 +971,20 @@ SDK 日志自己也写了：`initCovertToOgg ... privateHeaderOffset: 80`。
 `openAudioFile(path, deviceSecret, attr)`，`attr.isEncrypted` 回填 `true`，
 解出全长 PCM，能量正常，转写正常出段。详见上面 14.3 的更正表。
 
-归忆的落地：`DingerAudio.decodeToPcm()` 走官方通道并优先于
+独立客户端的落地：`DingerAudio.decodeToPcm()` 走官方通道并优先于
 `MediaExtractor`；`A1Store.isConverted()` 只认 `[BABA][OggS]`，
 裸 Ogg 判成未转换以便自动重新同步；播放器与转写共用
 `DingerAudio.lock`，并在播放时暂停转写队列（官方这套文件接口是
 **进程内单实例**，同时开两个文件必然互相踩）。
 
-归忆侧对应代码：`A1Store.normalizeConverted` / `PcmDecode.decodeWithCodec` /
+独立客户端侧对应代码：`A1Store.normalizeConverted` / `PcmDecode.decodeWithCodec` /
 `Player.openDinger`（后者已经在用官方路径，且是能正常播放的）。
 
 ## 14.7 仍未解出
 
 - [ ] `0x0130 getTransInfo` 的调用点与用途
 - [ ] `0x000C` 设备主动推的二进制（第 12 节遗留）
-- [ ] `cap_schedule` 定时任务的具体命令
+- [x] `cap_schedule` 定时任务的静态下发命令：官方 APK 的 `m62.a0` 用 `0x011A` 发送 `{did,action:"set",current,params:[{sid,start,end}]}`；但 2026-09-24 真机实报 `cap_schedule=1`，官方代码要求至少 2，尚无 `0x011A` 真机应答或执行验证。详见 `RESEARCH_AUDIT_2026-09-24.md`。
 - [ ] `0x013F`（第 7.6 节遗留）
 - [ ] WiFi 热点那个 webserver 的完整路由（目前只确认了
       `GET <url>/<%014d fid>` 这一条）

@@ -1,0 +1,4 @@
+# Preserve third-party extraction bytes so public hashes match original files.
+vendor/** -text whitespace=cr-at-eol
+*.so binary
+*.jar binary

@@ -93,8 +93,8 @@ def read_btsnoop(path_or_bytes):
 
     version, datalink = struct.unpack(">II", data[8:16])
     pos = 16
-    # btsnoop 时间戳:自公元0年1月1日起的微秒数
-    EPOCH = datetime(2000, 1, 1)
+    # btsnoop 时间戳与 Unix 时间戳相差 OFFSET 微秒；减去 OFFSET 后以 1970-01-01 为基准。
+    EPOCH = datetime(1970, 1, 1)
     OFFSET = 0x00dcddb30f2f8000
 
     while pos + 24 <= len(data):
