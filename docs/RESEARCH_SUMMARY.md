@@ -49,6 +49,8 @@
 
 ## 深入资料
 
+- [客户端兼容性复核](CLIENT_COMPATIBILITY.md)：三份库哈希、组合帧消费者和下载职责。
+
 - [后台文件映射](../A1_BACKEND_MODULE_MAP_2026-09-25.md) / [接口索引](../A1_BACKEND_INTERFACE_INDEX_2026-09-25.json)
 - [绑定和密钥链](../A1_BINDING_KEY_FLOW_2026-09-25.md) / [去云端可行性](../A1_LOCAL_ONLY_PAIRING_FEASIBILITY_2026-09-25.md)
 - [客户端整体研究](../A1_REPLACEMENT_RESEARCH_SYNTHESIS_2026-09-25.md)
